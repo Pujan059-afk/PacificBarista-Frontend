@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import CountUp from 'react-countup';
+import { useState, useEffect, useRef } from 'react';
 import useInView from '../../hooks/useInView';
 import { fadeIn, staggerContainer } from '../../animations';
 
@@ -9,6 +9,32 @@ const stats = [
   { value: 95, suffix: '%', label: 'Placement Guidance', subtitle: 'Career success rate' },
   { value: 10, suffix: '+', label: 'Years Experience', subtitle: 'Industry expertise' },
 ];
+
+const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+const useCountUp = (end, duration) => {
+  const [count, setCount] = useState(0);
+  const frameRef = useRef(null);
+
+  useEffect(() => {
+    const startTime = performance.now();
+    const animate = (now) => {
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      setCount(Math.floor(easeOutCubic(progress) * end));
+      if (progress < 1) frameRef.current = requestAnimationFrame(animate);
+    };
+    frameRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [end, duration]);
+
+  return count;
+};
+
+const CountUp = ({ end, duration, suffix }) => {
+  const count = useCountUp(end, duration);
+  return <>{count}{suffix}</>;
+};
 
 const Statistics = () => {
   const [ref, isInView] = useInView({ threshold: 0.3 });
@@ -66,7 +92,6 @@ const Statistics = () => {
                     end={stat.value}
                     duration={2.5}
                     suffix={stat.suffix}
-                    enableScrollSpy
                   />
                 ) : (
                   `0${stat.suffix}`

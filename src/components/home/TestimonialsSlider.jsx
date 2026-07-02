@@ -6,7 +6,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { fadeIn } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
-import { FiStar } from 'react-icons/fi';
+import { IconStar } from '../ui/Icons';
 
 const testimonials = [
   {
@@ -97,7 +97,7 @@ const TestimonialsSlider = () => {
 
                   <div className="flex gap-0.5 mb-4">
                     {Array.from({ length: t.rating }).map((_, j) => (
-                      <FiStar key={j} className="w-4 h-4 fill-accent text-accent" />
+                      <IconStar key={j} className="w-4 h-4 fill-accent text-accent" />
                     ))}
                   </div>
 

@@ -4,52 +4,52 @@ import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
-import { FiClock } from 'react-icons/fi';
+import { IconClock } from '../ui/Icons';
 
 const courses = [
   {
-    title: 'Espresso Fundamentals',
+    title: 'Basic Barista Training',
     slug: 'espresso-fundamentals',
-    duration: '4 Weeks',
+    duration: '2 Weeks',
     level: 'Beginner',
     levelVariant: 'success',
-    description: 'Master the art of espresso extraction, from grind size to tamping pressure and perfect crema.',
-    price: '$499',
+    description: 'Learn espresso extraction, milk steaming, machine operation, and foundation barista skills from scratch.',
+    price: 'Rs. 12,000',
     gradient: 'from-amber-700 to-amber-900',
     emoji: '☕',
   },
   {
-    title: 'Latte Art Mastery',
+    title: 'Latte Art & Design',
     slug: 'latte-art-mastery',
-    duration: '6 Weeks',
+    duration: '4 Weeks',
     level: 'Intermediate',
     levelVariant: 'accent',
-    description: 'Create stunning latte art patterns from basic hearts to intricate swans and rosettas.',
-    price: '$699',
+    description: 'Master pouring techniques — from hearts and tulips to swans and rosettas used in Nepali cafés.',
+    price: 'Rs. 18,000',
     gradient: 'from-rose-700 to-rose-900',
     emoji: '🎨',
   },
   {
-    title: 'Advanced Brewing',
+    title: 'Nepali Pour-Over & Manual Brewing',
     slug: 'advanced-brewing',
-    duration: '8 Weeks',
-    level: 'Advanced',
+    duration: '3 Weeks',
+    level: 'Intermediate',
     levelVariant: 'warning',
-    description: 'Explore pour-over, siphon, cold brew, and other advanced manual brewing techniques.',
-    price: '$899',
+    description: 'Explore pour-over, siphon, French press, and cold brew methods popular in Nepal\'s specialty coffee scene.',
+    price: 'Rs. 15,000',
     gradient: 'from-blue-700 to-blue-900',
     emoji: '⚗️',
   },
   {
-    title: 'Coffee Business',
-    slug: 'coffee-business',
-    duration: '12 Weeks',
+    title: 'Coffee Roasting & Cupping',
+    slug: 'coffee-science',
+    duration: '6 Weeks',
     level: 'Professional',
     levelVariant: 'default',
-    description: 'Complete business training for opening and running your own successful coffee shop.',
-    price: '$1,299',
+    description: 'From Nepali green beans to perfect roast — learn roasting profiles, cupping, and sensory evaluation.',
+    price: 'Rs. 25,000',
     gradient: 'from-emerald-700 to-emerald-900',
-    emoji: '🏪',
+    emoji: '🫘',
   },
 ];
 
@@ -89,7 +89,7 @@ const FeaturedCourses = () => {
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant={course.levelVariant}>{course.level}</Badge>
                   <span className="flex items-center gap-1 text-text/50 text-xs font-body">
-                    <FiClock className="w-3 h-3" />
+                    <IconClock className="w-3 h-3" />
                     {course.duration}
                   </span>
                 </div>

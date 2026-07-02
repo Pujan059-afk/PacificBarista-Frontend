@@ -1,31 +1,31 @@
 import { motion } from 'framer-motion';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
-import { FiEdit3, FiBookOpen, FiCoffee, FiAward, FiBriefcase } from 'react-icons/fi';
+import { IconEdit, IconBookOpen, IconCoffee, IconAward, IconBriefcase } from '../ui/Icons';
 
 const steps = [
   {
-    icon: FiEdit3,
+    icon: IconEdit,
     title: 'Enroll',
     description: 'Choose your program and complete the simple enrollment process online.',
   },
   {
-    icon: FiBookOpen,
+    icon: IconBookOpen,
     title: 'Learn',
     description: 'Attend expert-led classes combining theory with hands-on practical sessions.',
   },
   {
-    icon: FiCoffee,
+    icon: IconCoffee,
     title: 'Practice',
     description: 'Hone your skills with unlimited practice time on professional equipment.',
   },
   {
-    icon: FiAward,
+    icon: IconAward,
     title: 'Certification',
     description: 'Pass your assessments and earn your globally recognized barista certification.',
   },
   {
-    icon: FiBriefcase,
+    icon: IconBriefcase,
     title: 'Career',
     description: 'Launch your career with our job placement support and industry connections.',
   },

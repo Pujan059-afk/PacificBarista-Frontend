@@ -1,36 +1,36 @@
 import { motion } from 'framer-motion';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
-import { FiStar, FiTool, FiAward, FiBriefcase, FiUsers, FiMonitor } from 'react-icons/fi';
+import { IconStar, IconTool, IconAward, IconBriefcase, IconUsers, IconMonitor } from '../ui/Icons';
 
 const reasons = [
   {
-    icon: FiStar,
+    icon: IconStar,
     title: 'Experienced Trainers',
     description: 'Learn from award-winning baristas with years of industry experience at top cafes worldwide.',
   },
   {
-    icon: FiTool,
+    icon: IconTool,
     title: 'Hands-on Training',
     description: 'Get practical experience with professional-grade equipment in our state-of-the-art lab.',
   },
   {
-    icon: FiAward,
+    icon: IconAward,
     title: 'Industry Certification',
     description: 'Earn globally recognized certifications that open doors to opportunities worldwide.',
   },
   {
-    icon: FiBriefcase,
+    icon: IconBriefcase,
     title: 'Career Support',
     description: 'Receive dedicated job placement assistance and mentorship throughout your career journey.',
   },
   {
-    icon: FiUsers,
+    icon: IconUsers,
     title: 'Small Class Sizes',
     description: 'Benefit from personalized attention with limited class sizes for optimal learning.',
   },
   {
-    icon: FiMonitor,
+    icon: IconMonitor,
     title: 'Modern Equipment',
     description: 'Train on the latest espresso machines and brewing technology used by top cafes.',
   },

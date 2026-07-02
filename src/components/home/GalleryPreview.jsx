@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
-import { FiArrowRight } from 'react-icons/fi';
+import { IconArrowRight } from '../ui/Icons';
 
 const images = [
   { gradient: 'from-amber-600 to-amber-800', span: 'lg:row-span-2 lg:col-span-2', label: 'Espresso Art', emoji: '☕' },
@@ -58,7 +58,7 @@ const GalleryPreview = () => {
           className="text-center mt-10"
         >
           <Link to="/gallery">
-            <Button variant="outline" size="lg" icon={FiArrowRight} iconPosition="right">
+            <Button variant="outline" size="lg" icon={IconArrowRight} iconPosition="right">
               View Full Gallery
             </Button>
           </Link>

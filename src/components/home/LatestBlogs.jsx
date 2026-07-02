@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
-import { FiArrowRight, FiCalendar } from 'react-icons/fi';
+import { IconArrowRight, IconCalendar } from '../ui/Icons';
 
 const blogs = [
   {
@@ -66,7 +66,7 @@ const LatestBlogs = () => {
 
               <div className="p-6">
                 <div className="flex items-center gap-2 text-text/40 text-xs font-body mb-3">
-                  <FiCalendar className="w-3.5 h-3.5" />
+                  <IconCalendar className="w-3.5 h-3.5" />
                   <span>{blog.date}</span>
                 </div>
 
@@ -85,7 +85,7 @@ const LatestBlogs = () => {
                   className="inline-flex items-center gap-1.5 text-accent font-body text-sm font-semibold hover:gap-2 transition-all duration-300"
                 >
                   Read More
-                  <FiArrowRight className="w-3.5 h-3.5" />
+                  <IconArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </motion.article>
@@ -100,7 +100,7 @@ const LatestBlogs = () => {
           className="text-center mt-10"
         >
           <Link to="/blog">
-            <Button variant="outline" size="lg" icon={FiArrowRight} iconPosition="right">
+            <Button variant="outline" size="lg" icon={IconArrowRight} iconPosition="right">
               View All Posts
             </Button>
           </Link>

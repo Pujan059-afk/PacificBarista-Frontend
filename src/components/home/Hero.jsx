@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { fadeIn, staggerContainer, textReveal } from '../../animations';
 import Button from '../ui/Button';
-import { FiChevronDown } from 'react-icons/fi';
+import { IconChevronDown } from '../ui/Icons';
+import heroBg from '../../assets/images/hero-bg.jpeg';
 
 const floatingBeans = [
   { x: 10, y: 20, size: 16, duration: 6, delay: 0 },
@@ -19,8 +20,11 @@ const headingWords = "Become a Professional Barista".split(" ");
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#3B2A23] via-[#2A1E18] to-[#1D1D1D]">
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0">
+        <img src={heroBg} alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+      </div>
 
       {floatingBeans.map((bean, i) => (
         <motion.div
@@ -98,7 +102,7 @@ const Hero = () => {
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <FiChevronDown className="text-white/40 w-6 h-6" />
+        <IconChevronDown className="text-white/40 w-6 h-6" />
       </motion.div>
     </section>
   );
