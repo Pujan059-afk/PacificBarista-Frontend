@@ -1,0 +1,144 @@
+import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { motion } from 'framer-motion';
+import PageTransition from '../components/common/PageTransition';
+import SectionTitle from '../components/ui/SectionTitle';
+import CourseCard from '../components/courses/CourseCard';
+import CourseFilter from '../components/courses/CourseFilter';
+import Loader from '../components/common/Loader';
+import { staggerContainer, fadeIn } from '../animations';
+
+const coursesData = [
+  {
+    title: 'Espresso Fundamentals',
+    slug: 'espresso-fundamentals',
+    duration: '4 Weeks',
+    level: 'beginner',
+    shortDescription: 'Master the art of espresso extraction, from dialing in to perfecting your shot technique.',
+    price: 499,
+  },
+  {
+    title: 'Latte Art Mastery',
+    slug: 'latte-art-mastery',
+    duration: '6 Weeks',
+    level: 'intermediate',
+    shortDescription: 'Learn to pour stunning latte art with precision, from hearts and rosettas to advanced patterns.',
+    price: 699,
+  },
+  {
+    title: 'Advanced Brewing',
+    slug: 'advanced-brewing',
+    duration: '5 Weeks',
+    level: 'advanced',
+    shortDescription: 'Explore pour-over, siphon, cold brew, and experimental brewing methods at a professional level.',
+    price: 799,
+  },
+  {
+    title: 'Coffee Science',
+    slug: 'coffee-science',
+    duration: '8 Weeks',
+    level: 'advanced',
+    shortDescription: 'Dive deep into the chemistry of coffee — roasting profiles, extraction variables, and sensory analysis.',
+    price: 999,
+  },
+  {
+    title: 'Barista Certification',
+    slug: 'barista-certification',
+    duration: '10 Weeks',
+    level: 'intermediate',
+    shortDescription: 'Comprehensive program covering all aspects of professional barista work, culminating in certification.',
+    price: 1299,
+  },
+];
+
+const Courses = () => {
+  const [loading, setLoading] = useState(false);
+  const [activeLevel, setActiveLevel] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredCourses = useMemo(() => {
+    return coursesData.filter((course) => {
+      const matchesLevel = activeLevel === 'all' || course.level === activeLevel;
+      const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesLevel && matchesSearch;
+    });
+  }, [activeLevel, searchQuery]);
+
+  if (loading) return <Loader />;
+
+  return (
+    <PageTransition>
+      <Helmet>
+        <title>Our Courses | Pacific Barista Academy</title>
+        <meta name="description" content="Explore our range of professional barista training courses — from espresso fundamentals to full certification." />
+      </Helmet>
+
+      <section className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-secondary overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-10 left-10 w-72 h-72 border border-accent/20 rounded-full" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 border border-accent/10 rounded-full" />
+        </div>
+        <div className="container-custom relative z-10">
+          <motion.div
+            variants={fadeIn('up')}
+            initial="hidden"
+            animate="show"
+            className="text-center"
+          >
+            <span className="inline-block text-accent font-body font-semibold text-sm uppercase tracking-[0.2em] mb-4">
+              Start Your Journey
+            </span>
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-4">
+              Our Courses
+            </h1>
+            <p className="font-body text-cream/60 text-lg max-w-2xl mx-auto">
+              From first pull to professional mastery — find the course that matches your passion and skill level.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <div className="container-custom">
+          <CourseFilter
+            activeLevel={activeLevel}
+            onFilterChange={setActiveLevel}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          />
+
+          {filteredCourses.length > 0 ? (
+            <motion.div
+              variants={staggerContainer(0.1)}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {filteredCourses.map((course, index) => (
+                <CourseCard key={course.slug} course={course} index={index} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              variants={fadeIn('up')}
+              initial="hidden"
+              animate="show"
+              className="text-center py-20"
+            >
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-accent/10 flex items-center justify-center">
+                <svg className="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <h3 className="font-heading text-2xl font-bold text-primary mb-2">No courses found</h3>
+              <p className="font-body text-text/60">Try adjusting your filters or search term.</p>
+            </motion.div>
+          )}
+        </div>
+      </section>
+    </PageTransition>
+  );
+};
+
+export default Courses;
