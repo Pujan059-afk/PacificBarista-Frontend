@@ -61,7 +61,7 @@ const ManageBlogs = () => {
           <h1 className="font-heading text-2xl font-bold text-primary">Blogs</h1>
           <p className="font-body text-text/60 text-sm mt-1">Manage blog posts</p>
         </div>
-        <Link to="/admin/blogs/add">
+        <Link to="/admin/blogs/new">
           <Button icon={FiPlus} size="sm">Add New Blog</Button>
         </Link>
       </div>

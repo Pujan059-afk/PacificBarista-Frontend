@@ -93,3 +93,7 @@ body {
     padding-right: 2rem;
   }
 }
+
+.admin-wrapper .font-heading {
+  font-family: 'Inter', 'Arial', sans-serif;
+}

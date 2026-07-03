@@ -6,6 +6,7 @@ import { FiChevronDown } from 'react-icons/fi';
 import useScrollPosition from '../../hooks/useScrollPosition';
 import { NAV_LINKS } from '../../utils/constants';
 import Button from '../ui/Button';
+import logo from '../../assets/pacificbarista.jpg';
 
 const navVariants = {
   hidden: { y: -100 },
@@ -22,11 +23,9 @@ const mobileItemVariants = {
 };
 
 const megaMenuCourses = [
-  { label: 'Espresso Fundamentals', path: '/courses/espresso-fundamentals' },
-  { label: 'Latte Art Mastery', path: '/courses/latte-art-mastery' },
-  { label: 'Advanced Brewing', path: '/courses/advanced-brewing' },
-  { label: 'Coffee Science', path: '/courses/coffee-science' },
-  { label: 'Barista Certification', path: '/courses/barista-certification' },
+  { label: 'Foundation Barista Course', path: '/courses/foundation-barista-course' },
+  { label: 'Full Barista Course', path: '/courses/full-barista-course' },
+  { label: 'Advanced Barista Course', path: '/courses/advanced-barista-course' },
 ];
 
 const Navbar = () => {
@@ -52,7 +51,7 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between h-20">
           <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl">☕</span>
+            <img src={logo} alt="Pacific Barista" className="h-10 w-10 rounded-full object-cover" />
             <span className={`font-heading text-xl font-bold transition-colors duration-300 ${
               isScrolled || !isHomePage ? 'text-primary' : 'text-white'
             }`}>

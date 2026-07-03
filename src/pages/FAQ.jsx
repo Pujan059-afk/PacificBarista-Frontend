@@ -19,12 +19,12 @@ const faqs = [
   {
     category: 'general',
     question: 'What is Pacific Barista Academy?',
-    answer: 'Pacific Barista Academy is a premium barista training school based in Melbourne, Australia. We offer comprehensive coffee education programs ranging from beginner foundation courses to master-level certifications, all taught by industry professionals.',
+    answer: 'Pacific Barista Academy is a premium barista training school based in Pokhara, Nepal. We offer comprehensive coffee education programs ranging from beginner foundation courses to master-level certifications, all taught by industry professionals.',
   },
   {
     category: 'general',
     question: 'Where are you located?',
-    answer: 'We are located at 123 Brew Street, Coffee District, Melbourne, VIC 3000, Australia. Our facility features state-of-the-art training labs, cupping rooms, and dedicated practice stations.',
+    answer: 'We are located at Newroad-9, Pokhara, Nepal. Our facility features state-of-the-art training labs, cupping rooms, and dedicated practice stations.',
   },
   {
     category: 'general',
@@ -54,7 +54,7 @@ const faqs = [
   {
     category: 'courses',
     question: 'Do you offer online courses?',
-    answer: 'Currently, all our certification programs are conducted in-person at our Melbourne facility to provide hands-on practical training. Some theory components are available through our online learning portal.',
+    answer: 'Currently, all our certification programs are conducted in-person at our Pokhara facility to provide hands-on practical training. Some theory components are available through our online learning portal.',
   },
   {
     category: 'enrollment',

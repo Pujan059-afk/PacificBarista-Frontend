@@ -134,7 +134,7 @@ const Dashboard = () => {
           <h2 className="font-heading text-lg font-bold text-primary mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Link
-              to="/admin/courses/add"
+                to="/admin/courses/new"
               className="flex items-center gap-3 p-4 rounded-lg border border-primary/10 hover:border-accent/30 hover:bg-accent/5 transition-all group"
             >
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors">
@@ -146,7 +146,7 @@ const Dashboard = () => {
               </div>
             </Link>
             <Link
-              to="/admin/blogs/add"
+                to="/admin/blogs/new"
               className="flex items-center gap-3 p-4 rounded-lg border border-primary/10 hover:border-accent/30 hover:bg-accent/5 transition-all group"
             >
               <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">

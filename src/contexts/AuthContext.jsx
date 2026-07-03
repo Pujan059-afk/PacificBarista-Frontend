@@ -22,9 +22,10 @@ export const AuthProvider = ({ children }) => {
       api
         .get('/auth/me')
         .then((res) => {
-          setUser(res.data.user);
+          const userData = res.data.user || res.data;
+          setUser(userData);
           setIsAuthenticated(true);
-          setAdmin(res.data.user.role === 'admin');
+          setAdmin(userData.role === 'admin');
         })
         .catch(() => {
           localStorage.removeItem('token');
@@ -38,11 +39,12 @@ export const AuthProvider = ({ children }) => {
   const login = useCallback(async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
     const { token, user: userData } = res.data;
+    const userInfo = userData || res.data;
     localStorage.setItem('token', token);
-    setUser(userData);
+    setUser(userInfo);
     setIsAuthenticated(true);
-    setAdmin(userData.role === 'admin');
-    return userData;
+    setAdmin(userInfo.role === 'admin');
+    return userInfo;
   }, []);
 
   const logout = useCallback(() => {

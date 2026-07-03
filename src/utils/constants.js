@@ -15,8 +15,8 @@ export const COURSE_LEVELS = [
 ];
 
 export const SOCIAL_LINKS = [
-  { name: 'Instagram', url: 'https://instagram.com/pacificbarista', icon: 'FaInstagram' },
-  { name: 'Facebook', url: 'https://facebook.com/pacificbarista', icon: 'FaFacebook' },
+  { name: 'Facebook', url: 'https://www.facebook.com/search/top?q=pacific%20barista', icon: 'FaFacebook' },
+  { name: 'Instagram', url: 'https://www.instagram.com/baristapacific/', icon: 'FaInstagram' },
+  { name: 'TikTok', url: 'https://www.tiktok.com/@pacific_barista', icon: 'FaTiktok' },
   { name: 'YouTube', url: 'https://youtube.com/@pacificbarista', icon: 'FaYoutube' },
-  { name: 'TikTok', url: 'https://tiktok.com/@pacificbarista', icon: 'FaTiktok' },
 ];

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Card from '../ui/Card';
 import Badge from '../ui/Badge';
+import { IconCoffee } from '../ui/Icons';
 
 const levelVariant = {
   beginner: 'success',
@@ -10,7 +11,8 @@ const levelVariant = {
 };
 
 const CourseCard = ({ course, index = 0 }) => {
-  const { title, slug, image, duration, level, shortDescription, price } = course;
+  const { title, slug, image, duration, level, shortDescription, price, currency, highlight } = course;
+  const currencySymbol = currency === 'NPR' ? 'Rs.' : '$';
 
   return (
     <motion.div
@@ -27,7 +29,7 @@ const CourseCard = ({ course, index = 0 }) => {
             {image ? (
               <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             ) : (
-              <span className="text-cream/30 font-heading text-6xl font-bold">PB</span>
+              <IconCoffee className="w-14 h-14 text-cream/30" />
             )}
           </div>
           <div className="absolute top-3 left-3">
@@ -46,11 +48,14 @@ const CourseCard = ({ course, index = 0 }) => {
               {title}
             </h3>
           </Link>
+          {highlight && (
+            <span className="inline-block text-accent font-body text-xs font-semibold mb-2">{highlight}</span>
+          )}
           <p className="font-body text-text/60 text-sm leading-relaxed flex-1 mb-4">
             {shortDescription}
           </p>
           <div className="flex items-center justify-between pt-4 border-t border-primary/5">
-            <span className="font-heading text-xl font-bold text-accent">${price}</span>
+            <span className="font-heading text-xl font-bold text-accent">{currencySymbol}. {price.toLocaleString()}/-</span>
             <Link
               to={`/courses/${slug}`}
               className="font-body text-sm font-medium text-primary hover:text-accent transition-colors duration-300"

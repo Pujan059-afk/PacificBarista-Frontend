@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
-import { IconArrowRight } from '../ui/Icons';
+import { IconArrowRight, IconCoffee, IconPalette, IconFlask, IconBookOpen, IconAward } from '../ui/Icons';
 
 const images = [
-  { gradient: 'from-amber-600 to-amber-800', span: 'lg:row-span-2 lg:col-span-2', label: 'Espresso Art', emoji: '☕' },
-  { gradient: 'from-rose-600 to-rose-800', span: 'lg:col-span-2', label: 'Latte Art', emoji: '🎨' },
-  { gradient: 'from-blue-600 to-blue-800', span: 'lg:col-span-1', label: 'Brewing Lab', emoji: '⚗️' },
-  { gradient: 'from-emerald-600 to-emerald-800', span: 'lg:col-span-1', label: 'Student Workspace', emoji: '📚' },
-  { gradient: 'from-purple-600 to-purple-800', span: 'lg:col-span-2', label: 'Graduation Day', emoji: '🎓' },
+  { gradient: 'from-amber-600 to-amber-800', span: 'lg:row-span-2 lg:col-span-2', label: 'Espresso Art', Icon: IconCoffee },
+  { gradient: 'from-rose-600 to-rose-800', span: 'lg:col-span-2', label: 'Latte Art', Icon: IconPalette },
+  { gradient: 'from-blue-600 to-blue-800', span: 'lg:col-span-1', label: 'Brewing Lab', Icon: IconFlask },
+  { gradient: 'from-emerald-600 to-emerald-800', span: 'lg:col-span-1', label: 'Student Workspace', Icon: IconBookOpen },
+  { gradient: 'from-purple-600 to-purple-800', span: 'lg:col-span-2', label: 'Graduation Day', Icon: IconAward },
 ];
 
 const GalleryPreview = () => {
@@ -41,7 +41,7 @@ const GalleryPreview = () => {
               />
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300" />
               <div className="relative z-10 h-full flex flex-col items-center justify-center gap-2">
-                <span className="text-4xl select-none">{img.emoji}</span>
+                <img.Icon className="w-12 h-12 text-white/80" />
                 <span className="text-white font-heading font-semibold text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
                   {img.label}
                 </span>

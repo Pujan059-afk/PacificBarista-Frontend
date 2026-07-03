@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin, FiClock } from 'react-icons/fi';
 import { FaInstagram, FaFacebookF, FaYoutube, FaTiktok } from 'react-icons/fa';
 import { NAV_LINKS } from '../../utils/constants';
+import logo from '../../assets/pacificbarista.jpg';
 
 const socialIcons = {
   FaInstagram: FaInstagram,
@@ -11,11 +12,9 @@ const socialIcons = {
 };
 
 const courseLinks = [
-  { label: 'Espresso Fundamentals', path: '/courses/espresso-fundamentals' },
-  { label: 'Latte Art Mastery', path: '/courses/latte-art-mastery' },
-  { label: 'Advanced Brewing', path: '/courses/advanced-brewing' },
-  { label: 'Coffee Science', path: '/courses/coffee-science' },
-  { label: 'Barista Certification', path: '/courses/barista-certification' },
+  { label: 'Foundation Barista Course', path: '/courses/foundation-barista-course' },
+  { label: 'Full Barista Course', path: '/courses/full-barista-course' },
+  { label: 'Advanced Barista Course', path: '/courses/advanced-barista-course' },
 ];
 
 const Footer = () => {
@@ -25,7 +24,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">☕</span>
+              <img src={logo} alt="Pacific Barista" className="h-10 w-10 rounded-full object-cover" />
               <span className="font-heading text-xl font-bold">Pacific Barista</span>
             </Link>
             <p className="text-white/60 font-body text-sm leading-relaxed mb-6">
@@ -33,10 +32,10 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               {[
-                { icon: FaInstagram, url: 'https://instagram.com' },
-                { icon: FaFacebookF, url: 'https://facebook.com' },
-                { icon: FaYoutube, url: 'https://youtube.com' },
-                { icon: FaTiktok, url: 'https://tiktok.com' },
+                { icon: FaFacebookF, url: 'https://www.facebook.com/search/top?q=pacific%20barista' },
+                { icon: FaInstagram, url: 'https://www.instagram.com/baristapacific/' },
+                { icon: FaTiktok, url: 'https://www.tiktok.com/@pacific_barista' },
+                { icon: FaYoutube, url: 'https://youtube.com/@pacificbarista' },
               ].map((social, i) => (
                 <a
                   key={i}
@@ -89,19 +88,19 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <FiMapPin className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                 <span className="text-white/60 font-body text-sm">
-                  123 Coffee Lane, Melbourne VIC 3000, Australia
+                  Newroad-9, Pokhara, Nepal
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <FiPhone className="w-5 h-5 text-accent flex-shrink-0" />
-                <a href="tel:+61390001234" className="text-white/60 hover:text-accent transition-colors font-body text-sm">
-                  +61 3 9000 1234
+                <a href="tel:+9779846944202" className="text-white/60 hover:text-accent transition-colors font-body text-sm">
+                  061-591328 / 984-6944202
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <FiMail className="w-5 h-5 text-accent flex-shrink-0" />
-                <a href="mailto:hello@pacificbarista.com" className="text-white/60 hover:text-accent transition-colors font-body text-sm">
-                  hello@pacificbarista.com
+                <a href="mailto:pbap2021@gmail.com" className="text-white/60 hover:text-accent transition-colors font-body text-sm">
+                  pbap2021@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-3">

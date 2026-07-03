@@ -130,13 +130,13 @@ const Enroll = () => {
                     <Input
                       label="Phone Number"
                       type="tel"
-                      placeholder="+61 4XX XXX XXX"
+                      placeholder="984-6944202"
                       error={errors.phone?.message}
                       {...register('phone', { required: 'Phone number is required' })}
                     />
                     <Input
                       label="Address"
-                      placeholder="123 Main St, Melbourne"
+                      placeholder="Newroad, Pokhara, Nepal"
                       error={errors.address?.message}
                       {...register('address', { required: 'Address is required' })}
                     />

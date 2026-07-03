@@ -23,8 +23,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      const isAuthRequest = error.config?.url?.includes('/auth/');
+      if (isAuthRequest) {
+        localStorage.removeItem('token');
+      }
     }
     const message = error.response?.data?.message || error.message || 'Something went wrong';
     return Promise.reject({ ...error, message });

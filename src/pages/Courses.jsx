@@ -10,44 +10,34 @@ import { staggerContainer, fadeIn } from '../animations';
 
 const coursesData = [
   {
-    title: 'Espresso Fundamentals',
-    slug: 'espresso-fundamentals',
-    duration: '4 Weeks',
+    title: '#1. Foundation Barista Course',
+    slug: 'foundation-barista-course',
+    duration: '15 Days',
     level: 'beginner',
-    shortDescription: 'Master the art of espresso extraction, from dialing in to perfecting your shot technique.',
-    price: 499,
+    shortDescription: 'Perfect for Beginners! Learn the core skills to start your barista journey. Coffee beans, espresso extraction, milk steaming & more.',
+    price: 10000,
+    currency: 'NPR',
+    highlight: 'Perfect for Beginners!',
   },
   {
-    title: 'Latte Art Mastery',
-    slug: 'latte-art-mastery',
-    duration: '6 Weeks',
+    title: '#2. Full Barista Course',
+    slug: 'full-barista-course',
+    duration: '30 Days',
     level: 'intermediate',
-    shortDescription: 'Learn to pour stunning latte art with precision, from hearts and rosettas to advanced patterns.',
-    price: 699,
+    shortDescription: 'Step into Professional Barista Skills! Designed for those who want to work in cafés or coffee chains.',
+    price: 15000,
+    currency: 'NPR',
+    highlight: 'Step into Professional Barista Skills!',
   },
   {
-    title: 'Advanced Brewing',
-    slug: 'advanced-brewing',
-    duration: '5 Weeks',
+    title: '#3. Advanced Barista Course',
+    slug: 'advanced-barista-course',
+    duration: '40 Days',
     level: 'advanced',
-    shortDescription: 'Explore pour-over, siphon, cold brew, and experimental brewing methods at a professional level.',
-    price: 799,
-  },
-  {
-    title: 'Coffee Science',
-    slug: 'coffee-science',
-    duration: '8 Weeks',
-    level: 'advanced',
-    shortDescription: 'Dive deep into the chemistry of coffee — roasting profiles, extraction variables, and sensory analysis.',
-    price: 999,
-  },
-  {
-    title: 'Barista Certification',
-    slug: 'barista-certification',
-    duration: '10 Weeks',
-    level: 'intermediate',
-    shortDescription: 'Comprehensive program covering all aspects of professional barista work, culminating in certification.',
-    price: 1299,
+    shortDescription: 'Master the Art of Coffee! For experienced baristas looking to refine advanced techniques.',
+    price: 18000,
+    currency: 'NPR',
+    highlight: 'Master the Art of Coffee!',
   },
 ];
 
@@ -90,10 +80,20 @@ const Courses = () => {
               Start Your Journey
             </span>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-4">
-              Our Courses
+              Barista Course Detail
             </h1>
             <p className="font-body text-cream/60 text-lg max-w-2xl mx-auto">
-              From first pull to professional mastery — find the course that matches your passion and skill level.
+              Roast Your Barista Skill — from foundation to mastery.
+            </p>
+          </motion.div>
+          <motion.div
+            variants={fadeIn('up')}
+            initial="hidden"
+            animate="show"
+            className="mt-10 max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
+          >
+            <p className="font-body text-cream/90 text-base leading-relaxed text-center">
+              We provide complete international standard barista training package, Advance Latte Art. Including customer service standards, food safety measurements and health & safety measurements at work.
             </p>
           </motion.div>
         </div>

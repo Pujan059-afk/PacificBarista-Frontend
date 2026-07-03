@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/ui/Button';
-import { FiLogOut } from 'react-icons/fi';
 
 const AdminLogin = () => {
   const { login, isAuthenticated, admin, loading: authLoading } = useAuth();
@@ -13,12 +12,6 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!authLoading && isAuthenticated && admin) {
-      navigate('/admin/dashboard', { replace: true });
-    }
-  }, [isAuthenticated, admin, authLoading, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,7 +44,7 @@ const AdminLogin = () => {
   }
 
   if (isAuthenticated && admin) {
-    return null;
+    return <Navigate to="/admin/dashboard" replace />;
   }
 
   return (

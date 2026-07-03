@@ -6,28 +6,29 @@ import PageTransition from '../components/common/PageTransition';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import { fadeIn, staggerContainer } from '../animations';
+import { IconCoffee } from '../components/ui/Icons';
 
 const coursesData = {
-  'espresso-fundamentals': {
-    title: 'Espresso Fundamentals',
-    duration: '4 Weeks',
+  'foundation-barista-course': {
+    title: '#1. FOUNDATION BARISTA COURSE',
+    subtitle: 'Perfect for Beginners!',
+    duration: '15 Days',
     level: 'beginner',
-    price: 499,
+    price: 10000,
+    currency: 'NPR',
     image: null,
-    description: 'Espresso is the foundation of modern coffee culture. This comprehensive course takes you from zero to confident barista, covering everything you need to know about pulling the perfect shot. You will learn the science behind extraction, how to dial in different coffee beans, and how to consistency produce cafe-quality espresso.',
+    description: 'Learn the core skills to start your barista journey. This comprehensive foundation course covers everything from coffee beans and origin to espresso extraction, milk steaming, and café workflow. Perfect for absolute beginners with no prior experience.',
     outcomes: [
-      'Understand espresso extraction theory and variables',
-      'Dial in any coffee bean to achieve optimal extraction',
-      'Produce consistent, well-balanced espresso shots',
-      'Steam milk to perfect texture and temperature',
-      'Identify and troubleshoot common espresso issues',
-      'Maintain and clean professional espresso equipment',
+      'Coffee beans, origin & roasting basics',
+      'Espresso extraction techniques',
+      'Milk steaming & texturing',
+      'Espresso-based drinks (Cappuccino, Latte, Americano, etc.)',
+      'Machine setup, cleaning & maintenance',
+      'Café workflow & customer service basics',
     ],
     curriculum: [
-      { title: 'Week 1: Coffee Origins & Espresso Basics', lessons: ['History of espresso', 'Coffee bean varieties', 'Anatomy of an espresso machine', 'Safety and workstation setup'] },
-      { title: 'Week 2: The Art of Dialing In', lessons: ['Understanding grind size', 'Dose and yield fundamentals', 'Extraction timing', 'Tasting and adjusting'] },
-      { title: 'Week 3: Milk Steaming & Texture', lessons: ['Milk science', 'Steaming technique', 'Achieving microfoam', 'Common milk alternatives'] },
-      { title: 'Week 4: Consistency & Workflow', lessons: ['Reproducibility techniques', 'Speed and efficiency', 'Cleaning and maintenance', 'Final assessment'] },
+      { title: 'Week 1: Coffee Basics & Espresso Foundation', lessons: ['Coffee bean origins & roasting basics', 'Espresso extraction techniques', 'Machine setup & operation', 'Safety and workstation hygiene'] },
+      { title: 'Week 2: Milk Work & Café Service', lessons: ['Milk steaming & texturing', 'Espresso-based drinks (Cappuccino, Latte, Americano)', 'Cleaning & maintenance', 'Café workflow & customer service basics'] },
     ],
     requirements: [
       'No prior barista experience required',
@@ -36,122 +37,69 @@ const coursesData = {
       'Notepad and pen for notes',
     ],
     certificate: true,
+    outcomeNote: 'Gain confidence operating coffee machines and making perfect espresso drinks.',
   },
-  'latte-art-mastery': {
-    title: 'Latte Art Mastery',
-    duration: '6 Weeks',
+  'full-barista-course': {
+    title: '#2. FULL BARISTA COURSE',
+    subtitle: 'Step into Professional Barista Skills!',
+    duration: '30 Days',
     level: 'intermediate',
-    price: 699,
+    price: 15000,
+    currency: 'NPR',
     image: null,
-    description: 'Transform your coffee presentations with stunning latte art. This course guides you through the fundamentals of milk texturing and pouring techniques, progressing from simple hearts to complex patterns. Develop the muscle memory and artistic eye needed to create cafe-worthy designs consistently.',
+    description: 'Designed for those who want to work in cafés or coffee chains. This comprehensive program covers advanced espresso science, latte art fundamentals, multiple brewing methods, and professional café workflow management.',
     outcomes: [
-      'Steam milk to perfect microfoam consistency',
-      'Pour hearts, tulips, and rosettas with confidence',
-      'Master etching and free-pour techniques',
-      'Develop speed without sacrificing quality',
-      'Create custom patterns and designs',
-      'Understand contrast and espresso crema dynamics',
+      'Advanced espresso science & flavor balance',
+      'Latte art fundamentals',
+      'Brewing methods: Pour-over, AeroPress, French Press',
+      'Grinder calibration & troubleshooting',
+      'Menu planning & drink presentation',
+      'Hygiene & café workflow management',
     ],
     curriculum: [
-      { title: 'Week 1: Milk Science & Steaming Mastery', lessons: ['Milk chemistry and proteins', 'Perfect steaming technique', 'Aerating and texturing', 'Temperature control'] },
-      { title: 'Week 2: Foundation Pours', lessons: ['The heart pattern', 'Symmetry and positioning', 'Flow rate control', 'Common mistakes and fixes'] },
-      { title: 'Week 3: Rosetta & Tulip', lessons: ['Rosetta wiggle technique', 'Tulip layering', 'Stacking and spacing', 'Practice drills'] },
-      { title: 'Week 4: Advanced Patterns', lessons: ['Swan and winged designs', 'Combination patterns', 'Etching tools and methods', 'Color contrast techniques'] },
-      { title: 'Week 5: Speed & Consistency', lessons: ['Timed pour exercises', 'High-volume workflow', 'Quality control', 'Competition prep basics'] },
-      { title: 'Week 6: Final Portfolio', lessons: ['Design portfolio creation', 'Peer review session', 'Final assessment', 'Certification'] },
+      { title: 'Week 1: Advanced Espresso & Latte Art', lessons: ['Advanced espresso science & flavor balance', 'Latte art fundamentals (hearts, tulips)', 'Grinder calibration', 'Drink presentation'] },
+      { title: 'Week 2: Brewing Methods & Menu Planning', lessons: ['Pour-over techniques', 'AeroPress & French Press', 'Menu planning', 'Flavor balancing'] },
+      { title: 'Week 3: Workflow & Troubleshooting', lessons: ['Café workflow management', 'Equipment troubleshooting', 'Hygiene standards', 'Customer service excellence'] },
+      { title: 'Week 4: Final Assessment & Practice', lessons: ['Speed & efficiency drills', 'Quality control', 'Practical assessment', 'Career guidance'] },
     ],
     requirements: [
-      'Completed Espresso Fundamentals or equivalent experience',
-      'Basic espresso machine knowledge',
-      'Comfortable with milk steaming basics',
+      'Completed Foundation Barista Course or basic barista knowledge',
+      'Basic espresso machine familiarity',
+      'Passion for coffee and café work',
     ],
     certificate: true,
+    outcomeNote: 'Become a skilled barista ready for professional café work or your own setup.',
   },
-  'advanced-brewing': {
-    title: 'Advanced Brewing',
-    duration: '5 Weeks',
+  'advanced-barista-course': {
+    title: '#3. ADVANCED BARISTA COURSE',
+    subtitle: 'Master the Art of Coffee!',
+    duration: '40 Days',
     level: 'advanced',
-    price: 799,
+    price: 18000,
+    currency: 'NPR',
     image: null,
-    description: 'Go beyond espresso and explore the diverse world of specialty coffee brewing. This course covers pour-over, immersion, cold brew, siphon, and experimental methods. You will learn to manipulate variables with precision to highlight unique flavor profiles in any coffee.',
+    description: 'For experienced baristas looking to refine advanced techniques. Master advanced latte art, signature beverage creation, coffee tasting, and café leadership skills. Develop into a master barista with technical, creative, and management abilities.',
     outcomes: [
-      'Master multiple brewing methods with precision',
-      'Understand extraction chemistry and TDS measurement',
-      'Develop and refine your own brew recipes',
-      'Evaluate coffee using professional cupping protocols',
-      'Troubleshoot and optimize any brewing scenario',
-      'Design coffee menus featuring diverse brew methods',
+      'Advanced latte art (Hearts, Rosetta, Tulips and Free Pours)',
+      'Signature beverage creation & recipe design',
+      'Coffee tasting & sensory evaluation',
+      'Machine calibration & maintenance mastery',
+      'Café leadership & management',
+      'Coffee business & entrepreneurship basics',
     ],
     curriculum: [
-      { title: 'Week 1: Brewing Science', lessons: ['Extraction chemistry', 'Water composition and temperature', 'Grind distribution', 'Brew ratios and strength'] },
-      { title: 'Week 2: Pour-Over Methods', lessons: ['V60 technique', 'Chemex brewing', 'Kalita Wave', 'Comparing methods'] },
-      { title: 'Week 3: Immersion & Cold Brew', lessons: ['French press mastery', 'AeroPress techniques', 'Cold brew and cold drip', 'Nitrous infusion'] },
-      { title: 'Week 4: Siphon & Experimental', lessons: ['Siphon brewing', 'Vacuum extraction', 'Rao spin and other innovations', 'Flavor manipulation'] },
-      { title: 'Week 5: Cupping & Menu Design', lessons: ['Professional cupping protocol', 'Sensory evaluation', 'Brew menu development', 'Final assessment'] },
+      { title: 'Week 1-2: Advanced Latte Art & Beverage Design', lessons: ['Advanced pouring techniques (Rosetta, Tulips, Swans)', 'Free pour practice', 'Signature beverage creation', 'Recipe design & costing'] },
+      { title: 'Week 3-4: Sensory & Machine Mastery', lessons: ['Coffee tasting & sensory evaluation', 'Machine calibration mastery', 'Preventive maintenance', 'Equipment deep-dive'] },
+      { title: 'Week 5-6: Leadership & Business', lessons: ['Café leadership & team management', 'Inventory & cost control', 'Coffee business basics', 'Entrepreneurship essentials'] },
+      { title: 'Week 7-8: Final Project & Assessment', lessons: ['Signature drink portfolio', 'Speed & quality certification', 'Business plan presentation', 'Final practical exam'] },
     ],
     requirements: [
-      'Solid understanding of espresso fundamentals',
-      'At least 6 months of coffee industry experience',
-      'SCA Sensory Skills foundation recommended',
+      'Completed Full Barista Course or 6+ months café experience',
+      'Proficient in espresso extraction and milk texturing',
+      'Basic latte art skills',
     ],
     certificate: true,
-  },
-  'coffee-science': {
-    title: 'Coffee Science',
-    duration: '8 Weeks',
-    level: 'advanced',
-    price: 999,
-    image: null,
-    description: 'A deep dive into the scientific principles behind coffee. From green bean chemistry to roasting profiles and extraction physics, this course is designed for coffee professionals who want to understand the "why" behind every cup. Combining theory with hands-on lab work.',
-    outcomes: [
-      'Analyze green coffee bean chemistry and grading',
-      'Understand roasting chemistry and profile development',
-      'Measure extraction using TDS and refractometers',
-      'Apply water chemistry principles to brewing',
-      'Conduct professional sensory evaluations',
-      'Develop data-driven approaches to quality control',
-    ],
-    curriculum: [
-      { title: 'Week 1-2: Green Coffee Chemistry', lessons: ['Bean anatomy and structure', 'Varietals and processing', 'Grading and defects', 'Storage and aging'] },
-      { title: 'Week 3-4: Roasting Science', lessons: ['Heat transfer principles', 'Roast profile development', 'Maillard reaction and caramelization', 'Roast logging and analysis'] },
-      { title: 'Week 5-6: Extraction Physics', lessons: ['Solubility and diffusion', 'TDS and extraction yield', 'Refractometer usage', 'Water chemistry adjustment'] },
-      { title: 'Week 7-8: Sensory Science & QC', lessons: ['Flavor chemistry', 'SCA cupping protocol', 'Statistical QC methods', 'Final research project'] },
-    ],
-    requirements: [
-      'Professional coffee experience (1+ year recommended)',
-      'SCA Intermediate certification or equivalent knowledge',
-      'Basic chemistry understanding is helpful',
-    ],
-    certificate: true,
-  },
-  'barista-certification': {
-    title: 'Barista Certification',
-    duration: '10 Weeks',
-    level: 'intermediate',
-    price: 1299,
-    image: null,
-    description: 'Our most comprehensive program prepares you for a professional barista career. Combining all core disciplines — espresso, milk, brewing, and service — this course culminates in an industry-recognized certification. You will graduate with the skills and confidence to work at any specialty coffee establishment.',
-    outcomes: [
-      'Master all core barista skills to professional standard',
-      'Develop speed and efficiency in a high-volume setting',
-      'Provide exceptional customer service and workflow management',
-      'Perform equipment maintenance and troubleshooting',
-      'Understand coffee sourcing, roasting, and business operations',
-      'Earn Pacific Barista Certification recognized industry-wide',
-    ],
-    curriculum: [
-      { title: 'Week 1-2: Core Espresso Skills', lessons: ['Machine anatomy and setup', 'Dialing in workflow', 'Shot analysis', 'Milk texturing advanced'] },
-      { title: 'Week 3-4: Latte Art & Beverage Menu', lessons: ['Free-pour patterns', 'Seasonal drink development', 'Speed pours', 'Quality assurance'] },
-      { title: 'Week 5-6: Brewing & Sensory', lessons: ['Alternative brew methods', 'Cupping protocol', 'Flavor profiling', 'Menu costing'] },
-      { title: 'Week 7-8: Service & Workflow', lessons: ['Customer service excellence', 'High-volume management', 'Inventory and stock control', 'Health and safety'] },
-      { title: 'Week 9-10: Certification Prep & Exam', lessons: ['Skill review and practice', 'Written examination', 'Practical assessment', 'Career planning'] },
-    ],
-    requirements: [
-      'Passion for coffee and commitment to the full program',
-      'Basic barista experience recommended',
-      'Ability to stand for extended periods during practicals',
-    ],
-    certificate: true,
+    outcomeNote: 'Develop into a master barista with technical, creative, and leadership skills.',
   },
 };
 
@@ -183,6 +131,8 @@ const CourseDetail = () => {
     );
   }
 
+  const currencySymbol = course.currency === 'NPR' ? 'Rs.' : '$';
+
   return (
     <PageTransition>
       <Helmet>
@@ -207,6 +157,11 @@ const CourseDetail = () => {
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-6">
               {course.title}
             </h1>
+            {course.subtitle && (
+              <span className="inline-block text-accent font-body font-semibold text-lg mb-4">
+                {course.subtitle}
+              </span>
+            )}
             <p className="font-body text-cream/60 text-lg leading-relaxed">
               {course.description.substring(0, 120)}...
             </p>
@@ -228,7 +183,7 @@ const CourseDetail = () => {
               <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span className="font-body text-sm font-semibold text-white">${course.price}</span>
+              <span className="font-body text-sm font-semibold text-white">{currencySymbol}. {course.price.toLocaleString()}/-</span>
             </div>
           </motion.div>
         </div>
@@ -275,6 +230,14 @@ const CourseDetail = () => {
                     </motion.li>
                   ))}
                 </motion.ul>
+                {course.outcomeNote && (
+                  <motion.div
+                    variants={fadeIn('up')}
+                    className="mt-6 p-5 bg-accent/10 rounded-xl border border-accent/20"
+                  >
+                    <p className="font-body text-accent font-semibold text-sm">{course.outcomeNote}</p>
+                  </motion.div>
+                )}
               </motion.div>
 
               <motion.div
@@ -345,7 +308,7 @@ const CourseDetail = () => {
                 className="bg-white rounded-xl p-6 shadow-md border border-primary/5 sticky top-28"
               >
                 <div className="w-full h-48 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-6">
-                  <span className="text-cream/30 font-heading text-5xl font-bold">PB</span>
+                  <IconCoffee className="w-20 h-20 text-cream/30" />
                 </div>
 
                 <div className="space-y-4 mb-6">
@@ -358,8 +321,8 @@ const CourseDetail = () => {
                     <Badge variant={levelVariant[course.level]}>{course.level}</Badge>
                   </div>
                   <div className="flex items-center justify-between font-body text-sm">
-                    <span className="text-text/60">Price</span>
-                    <span className="font-heading text-2xl font-bold text-accent">${course.price}</span>
+                    <span className="text-text/60">Fee</span>
+                    <span className="font-heading text-2xl font-bold text-accent">{currencySymbol}. {course.price.toLocaleString()}/-</span>
                   </div>
                 </div>
 

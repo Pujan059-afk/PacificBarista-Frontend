@@ -16,7 +16,7 @@ const floatingBeans = [
   { x: 60, y: 85, size: 15, duration: 5.8, delay: 0.7 },
 ];
 
-const headingWords = "Become a Professional Barista".split(" ");
+const headingWords = "Roast Your Barista Skill".split(" ");
 
 const Hero = () => {
   return (
@@ -83,8 +83,9 @@ const Hero = () => {
           variants={fadeIn('up')}
           className="text-white/60 font-body text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          Transform your passion for coffee into a rewarding career with world-class training
-          from industry professionals. Start your journey today.
+          Complete international standard barista training with Advance Latte Art, 
+          customer service standards, food safety & health & safety measurements at work. 
+          Start your journey today.
         </motion.p>
 
         <motion.div variants={fadeIn('up')} className="flex flex-col sm:flex-row gap-4 justify-center">

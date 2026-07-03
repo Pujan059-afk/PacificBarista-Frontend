@@ -4,52 +4,44 @@ import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
-import { IconClock } from '../ui/Icons';
+import { IconClock, IconCoffee, IconPalette, IconZap } from '../ui/Icons';
 
 const courses = [
   {
-    title: 'Basic Barista Training',
-    slug: 'espresso-fundamentals',
-    duration: '2 Weeks',
+    title: 'Foundation Barista Course',
+    slug: 'foundation-barista-course',
+    subtitle: 'Perfect for Beginners!',
+    duration: '15 Days',
     level: 'Beginner',
     levelVariant: 'success',
-    description: 'Learn espresso extraction, milk steaming, machine operation, and foundation barista skills from scratch.',
-    price: 'Rs. 12,000',
+    description: 'Learn the core skills to start your barista journey. Coffee beans, espresso extraction, milk steaming & more.',
+    price: 'Rs. 10,000',
     gradient: 'from-amber-700 to-amber-900',
-    emoji: '☕',
+    Icon: IconCoffee,
   },
   {
-    title: 'Latte Art & Design',
-    slug: 'latte-art-mastery',
-    duration: '4 Weeks',
+    title: 'Full Barista Course',
+    slug: 'full-barista-course',
+    subtitle: 'Step into Professional Barista Skills!',
+    duration: '30 Days',
     level: 'Intermediate',
     levelVariant: 'accent',
-    description: 'Master pouring techniques — from hearts and tulips to swans and rosettas used in Nepali cafés.',
-    price: 'Rs. 18,000',
-    gradient: 'from-rose-700 to-rose-900',
-    emoji: '🎨',
-  },
-  {
-    title: 'Nepali Pour-Over & Manual Brewing',
-    slug: 'advanced-brewing',
-    duration: '3 Weeks',
-    level: 'Intermediate',
-    levelVariant: 'warning',
-    description: 'Explore pour-over, siphon, French press, and cold brew methods popular in Nepal\'s specialty coffee scene.',
+    description: 'Designed for those who want to work in cafés or coffee chains. Advanced espresso, latte art & brewing methods.',
     price: 'Rs. 15,000',
-    gradient: 'from-blue-700 to-blue-900',
-    emoji: '⚗️',
+    gradient: 'from-rose-700 to-rose-900',
+    Icon: IconPalette,
   },
   {
-    title: 'Coffee Roasting & Cupping',
-    slug: 'coffee-science',
-    duration: '6 Weeks',
-    level: 'Professional',
-    levelVariant: 'default',
-    description: 'From Nepali green beans to perfect roast — learn roasting profiles, cupping, and sensory evaluation.',
-    price: 'Rs. 25,000',
-    gradient: 'from-emerald-700 to-emerald-900',
-    emoji: '🫘',
+    title: 'Advanced Barista Course',
+    slug: 'advanced-barista-course',
+    subtitle: 'Master the Art of Coffee!',
+    duration: '40 Days',
+    level: 'Advanced',
+    levelVariant: 'warning',
+    description: 'For experienced baristas. Master latte art, signature beverages, sensory evaluation & café leadership.',
+    price: 'Rs. 18,000',
+    gradient: 'from-blue-700 to-blue-900',
+    Icon: IconZap,
   },
 ];
 
@@ -60,7 +52,7 @@ const FeaturedCourses = () => {
         <SectionTitle
           subtitle="Featured Courses"
           title="Professional Training Programs"
-          description="Choose from our comprehensive range of barista training programs designed for every skill level."
+          description="Complete international standard barista training package with Advance Latte Art, customer service standards, and food safety & health & safety measurements at work."
         />
 
         <motion.div
@@ -80,7 +72,7 @@ const FeaturedCourses = () => {
                 <div
                   className={`relative h-48 bg-gradient-to-br ${course.gradient} flex items-center justify-center overflow-hidden`}
                 >
-                  <span className="text-6xl select-none">{course.emoji}</span>
+                  <course.Icon className="w-16 h-16 text-white/80" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
                 </div>
               </Link>

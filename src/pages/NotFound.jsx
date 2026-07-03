@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
+import { IconCoffee } from './../components/ui/Icons';
 
 export default function NotFound() {
   return (
@@ -14,7 +15,7 @@ export default function NotFound() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-8xl block mb-4">☕</span>
+          <IconCoffee className="w-24 h-24 mx-auto mb-4 text-primary/40" />
           <h1 className="font-heading text-7xl md:text-8xl font-bold text-primary mb-4">404</h1>
           <p className="font-body text-lg text-text/60 mb-8">
             The page you're looking for has been brewed away.

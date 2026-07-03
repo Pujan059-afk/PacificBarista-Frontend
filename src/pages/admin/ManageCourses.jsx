@@ -68,7 +68,7 @@ const ManageCourses = () => {
           <h1 className="font-heading text-2xl font-bold text-primary">Courses</h1>
           <p className="font-body text-text/60 text-sm mt-1">Manage your training courses</p>
         </div>
-        <Link to="/admin/courses/add">
+        <Link to="/admin/courses/new">
           <Button icon={FiPlus} size="sm">
             Add New Course
           </Button>

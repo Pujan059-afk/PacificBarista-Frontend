@@ -11,9 +11,9 @@ import api from '../services/api';
 import { fadeIn, staggerContainer } from '../animations/index';
 
 const contactInfo = [
-  { icon: FiMapPin, title: 'Our Address', details: ['123 Brew Street, Coffee District', 'Melbourne, VIC 3000', 'Australia'] },
-  { icon: FiPhone, title: 'Phone Number', details: ['+61 3 9876 5432', '+61 4 1234 5678'] },
-  { icon: FiMail, title: 'Email Address', details: ['hello@pacificbarista.com', 'enroll@pacificbarista.com'] },
+  { icon: FiMapPin, title: 'Our Address', details: ['Newroad-9, Pokhara', 'Pokhara, Nepal'] },
+  { icon: FiPhone, title: 'Phone Number', details: ['061-591328', '984-6944202'] },
+  { icon: FiMail, title: 'Email Address', details: ['pbap2021@gmail.com'] },
   { icon: FiClock, title: 'Working Hours', details: ['Mon - Fri: 8:00 AM - 6:00 PM', 'Saturday: 9:00 AM - 4:00 PM', 'Sunday: Closed'] },
 ];
 
@@ -157,7 +157,7 @@ const Contact = () => {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <FiMapPin className="w-10 h-10 text-accent mx-auto mb-2" />
-            <p className="font-body text-text/50 text-sm">123 Brew Street, Coffee District, Melbourne VIC 3000</p>
+            <p className="font-body text-text/50 text-sm">Newroad-9, Pokhara, Nepal</p>
           </div>
         </div>
         <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5" />

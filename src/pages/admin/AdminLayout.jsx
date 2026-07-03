@@ -113,7 +113,7 @@ const AdminLayout = () => {
   return (
     <>
       <Helmet><title>Admin - Pacific Barista</title></Helmet>
-      <div className="min-h-screen bg-cream flex">
+      <div className="admin-wrapper min-h-screen bg-cream flex">
         {/* Desktop sidebar */}
         <aside className="hidden lg:flex lg:w-64 lg:flex-col bg-primary fixed inset-y-0 left-0 z-30">
           {sidebarContent}

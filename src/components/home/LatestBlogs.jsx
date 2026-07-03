@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
-import { IconArrowRight, IconCalendar } from '../ui/Icons';
+import { IconArrowRight, IconCalendar, IconFlask, IconPalette, IconCoffee } from '../ui/Icons';
 
 const blogs = [
   {
@@ -12,7 +12,7 @@ const blogs = [
     excerpt: 'Discover the techniques and tips for mastering the perfect pour-over coffee at home or in a professional setting.',
     date: 'June 15, 2026',
     gradient: 'from-amber-500 to-amber-700',
-    emoji: '⚗️',
+    Icon: IconFlask,
   },
   {
     slug: 'latte-art-tips',
@@ -20,7 +20,7 @@ const blogs = [
     excerpt: 'Start your latte art journey with these fundamental techniques that every barista should know before attempting advanced designs.',
     date: 'June 8, 2026',
     gradient: 'from-rose-500 to-rose-700',
-    emoji: '🎨',
+    Icon: IconPalette,
   },
   {
     slug: 'coffee-bean-guide',
@@ -28,7 +28,7 @@ const blogs = [
     excerpt: 'Learn how different growing regions and roast levels affect flavor profiles and how to choose the right beans for your brew.',
     date: 'June 1, 2026',
     gradient: 'from-emerald-500 to-emerald-700',
-    emoji: '🫘',
+    Icon: IconCoffee,
   },
 ];
 
@@ -59,7 +59,7 @@ const LatestBlogs = () => {
                 <div
                   className={`relative h-48 bg-gradient-to-br ${blog.gradient} flex items-center justify-center overflow-hidden`}
                 >
-                  <span className="text-5xl select-none">{blog.emoji}</span>
+                  <blog.Icon className="w-14 h-14 text-white/80" />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                 </div>
               </Link>
