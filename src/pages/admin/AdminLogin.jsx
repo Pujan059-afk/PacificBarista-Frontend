@@ -1,37 +1,57 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../../contexts/AuthContext';
+import api from '../../services/api';
 import Button from '../../components/ui/Button';
+import { FiMail, FiLock, FiKey, FiArrowLeft } from 'react-icons/fi';
 
 const AdminLogin = () => {
   const { login, isAuthenticated, admin, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+
+  const [step, setStep] = useState('email');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     setError('');
-    if (!email || !password) {
-      setError('Please fill in all fields');
-      return;
-    }
-    setLoading(true);
+    if (!email || !password) { setError('Enter your email and password'); return; }
+    setSending(true);
     try {
-      const userData = await login(email, password);
+      await api.post('/auth/send-otp', { email, password });
+      setSent(true);
+      setStep('otp');
+    } catch (err) {
+      setError(err.message || 'Failed to send OTP');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setError('');
+    if (!otp) { setError('Enter the OTP'); return; }
+    setVerifying(true);
+    try {
+      const userData = await login(email, otp);
       if (userData.role !== 'admin') {
         setError('You do not have admin access');
         return;
       }
       navigate('/admin/dashboard', { replace: true });
     } catch (err) {
-      setError(err.message || 'Invalid credentials');
+      setError(err.message || 'Invalid OTP');
     } finally {
-      setLoading(false);
+      setVerifying(false);
     }
   };
 
@@ -73,31 +93,83 @@ const AdminLogin = () => {
               </motion.div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-primary font-body font-medium text-sm mb-1.5">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@pacificbarista.com"
-                  className="w-full px-4 py-3 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none transition-all duration-300 focus:border-accent focus:shadow-[0_0_0_3px_rgba(200,155,60,0.1)] placeholder:text-text/30"
-                />
-              </div>
-              <div>
-                <label className="block text-primary font-body font-medium text-sm mb-1.5">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-4 py-3 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none transition-all duration-300 focus:border-accent focus:shadow-[0_0_0_3px_rgba(200,155,60,0.1)] placeholder:text-text/30"
-                />
-              </div>
-              <Button type="submit" loading={loading} className="w-full justify-center" size="lg">
-                Sign In
-              </Button>
-            </form>
+            <AnimatePresence mode="wait">
+              {step === 'email' ? (
+                <motion.form
+                  key="email"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  onSubmit={handleSendOtp}
+                  className="space-y-5"
+                >
+                  <div>
+                    <label className="block text-primary font-body font-medium text-sm mb-1.5">Email</label>
+                    <div className="relative">
+                      <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text/30" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="admin@pacificbarista.com"
+                        className="w-full pl-10 pr-4 py-3 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none transition-all duration-300 focus:border-accent focus:shadow-[0_0_0_3px_rgba(200,155,60,0.1)] placeholder:text-text/30"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-primary font-body font-medium text-sm mb-1.5">Password</label>
+                    <div className="relative">
+                      <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text/30" />
+                      <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
+                        className="w-full pl-10 pr-4 py-3 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none transition-all duration-300 focus:border-accent focus:shadow-[0_0_0_3px_rgba(200,155,60,0.1)] placeholder:text-text/30"
+                      />
+                    </div>
+                  </div>
+                  <Button type="submit" loading={sending} className="w-full justify-center" size="lg">
+                    Send OTP
+                  </Button>
+                </motion.form>
+              ) : (
+                <motion.form
+                  key="otp"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  onSubmit={handleVerifyOtp}
+                  className="space-y-5"
+                >
+                  <div>
+                    <label className="block text-primary font-body font-medium text-sm mb-1.5">OTP sent to {email}</label>
+                    <div className="relative">
+                      <FiKey className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text/30" />
+                      <input
+                        type="text"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        placeholder="000000"
+                        maxLength={6}
+                        className="w-full pl-10 pr-4 py-3 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm text-center text-2xl tracking-[8px] outline-none transition-all duration-300 focus:border-accent focus:shadow-[0_0_0_3px_rgba(200,155,60,0.1)] placeholder:text-text/30"
+                      />
+                    </div>
+                    <p className="font-body text-xs text-text/40 mt-2 text-center">Enter the 6-digit code sent to your email. Expires in 10 minutes.</p>
+                  </div>
+                  <Button type="submit" loading={verifying} className="w-full justify-center" size="lg">
+                    Verify & Sign In
+                  </Button>
+                  <button
+                    type="button"
+                    onClick={() => { setStep('email'); setError(''); setOtp(''); setPassword(''); }}
+                    className="w-full flex items-center justify-center gap-2 font-body text-sm text-text/50 hover:text-accent transition-colors"
+                  >
+                    <FiArrowLeft className="w-4 h-4" /> Use a different email
+                  </button>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </div>
           <p className="text-center text-cream/50 font-body text-sm mt-6">
             Pacific Barista Training Academy &copy; {new Date().getFullYear()}
