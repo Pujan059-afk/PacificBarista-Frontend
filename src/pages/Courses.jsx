@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/common/PageTransition';
@@ -6,54 +6,30 @@ import SectionTitle from '../components/ui/SectionTitle';
 import CourseCard from '../components/courses/CourseCard';
 import CourseFilter from '../components/courses/CourseFilter';
 import Loader from '../components/common/Loader';
+import api from '../services/api';
 import { staggerContainer, fadeIn } from '../animations';
 
-const coursesData = [
-  {
-    title: '#1. Foundation Barista Course',
-    slug: 'foundation-barista-course',
-    duration: '15 Days',
-    level: 'beginner',
-    shortDescription: 'Perfect for Beginners! Learn the core skills to start your barista journey. Coffee beans, espresso extraction, milk steaming & more.',
-    price: 10000,
-    currency: 'NPR',
-    highlight: 'Perfect for Beginners!',
-  },
-  {
-    title: '#2. Full Barista Course',
-    slug: 'full-barista-course',
-    duration: '30 Days',
-    level: 'intermediate',
-    shortDescription: 'Step into Professional Barista Skills! Designed for those who want to work in cafés or coffee chains.',
-    price: 15000,
-    currency: 'NPR',
-    highlight: 'Step into Professional Barista Skills!',
-  },
-  {
-    title: '#3. Advanced Barista Course',
-    slug: 'advanced-barista-course',
-    duration: '40 Days',
-    level: 'advanced',
-    shortDescription: 'Master the Art of Coffee! For experienced baristas looking to refine advanced techniques.',
-    price: 18000,
-    currency: 'NPR',
-    highlight: 'Master the Art of Coffee!',
-  },
-];
-
 const Courses = () => {
-  const [loading, setLoading] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeLevel, setActiveLevel] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  useEffect(() => {
+    api.get('/courses')
+      .then((res) => setCourses(res.data.courses || []))
+      .catch(() => setCourses([]))
+      .finally(() => setLoading(false));
+  }, []);
+
   const filteredCourses = useMemo(() => {
-    return coursesData.filter((course) => {
-      const matchesLevel = activeLevel === 'all' || course.level === activeLevel;
-      const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
+    return courses.filter((course) => {
+      const matchesLevel = activeLevel === 'all' || course.level?.toLowerCase() === activeLevel;
+      const matchesSearch = course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        course.shortDescription?.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesLevel && matchesSearch;
     });
-  }, [activeLevel, searchQuery]);
+  }, [activeLevel, searchQuery, courses]);
 
   if (loading) return <Loader />;
 

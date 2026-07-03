@@ -1,107 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/common/PageTransition';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
+import Loader from '../components/common/Loader';
+import api from '../services/api';
 import { fadeIn, staggerContainer } from '../animations';
 import { IconCoffee } from '../components/ui/Icons';
-
-const coursesData = {
-  'foundation-barista-course': {
-    title: '#1. FOUNDATION BARISTA COURSE',
-    subtitle: 'Perfect for Beginners!',
-    duration: '15 Days',
-    level: 'beginner',
-    price: 10000,
-    currency: 'NPR',
-    image: null,
-    description: 'Learn the core skills to start your barista journey. This comprehensive foundation course covers everything from coffee beans and origin to espresso extraction, milk steaming, and café workflow. Perfect for absolute beginners with no prior experience.',
-    outcomes: [
-      'Coffee beans, origin & roasting basics',
-      'Espresso extraction techniques',
-      'Milk steaming & texturing',
-      'Espresso-based drinks (Cappuccino, Latte, Americano, etc.)',
-      'Machine setup, cleaning & maintenance',
-      'Café workflow & customer service basics',
-    ],
-    curriculum: [
-      { title: 'Week 1: Coffee Basics & Espresso Foundation', lessons: ['Coffee bean origins & roasting basics', 'Espresso extraction techniques', 'Machine setup & operation', 'Safety and workstation hygiene'] },
-      { title: 'Week 2: Milk Work & Café Service', lessons: ['Milk steaming & texturing', 'Espresso-based drinks (Cappuccino, Latte, Americano)', 'Cleaning & maintenance', 'Café workflow & customer service basics'] },
-    ],
-    requirements: [
-      'No prior barista experience required',
-      'A passion for coffee and willingness to learn',
-      'Closed-toe shoes for practical sessions',
-      'Notepad and pen for notes',
-    ],
-    certificate: true,
-    outcomeNote: 'Gain confidence operating coffee machines and making perfect espresso drinks.',
-  },
-  'full-barista-course': {
-    title: '#2. FULL BARISTA COURSE',
-    subtitle: 'Step into Professional Barista Skills!',
-    duration: '30 Days',
-    level: 'intermediate',
-    price: 15000,
-    currency: 'NPR',
-    image: null,
-    description: 'Designed for those who want to work in cafés or coffee chains. This comprehensive program covers advanced espresso science, latte art fundamentals, multiple brewing methods, and professional café workflow management.',
-    outcomes: [
-      'Advanced espresso science & flavor balance',
-      'Latte art fundamentals',
-      'Brewing methods: Pour-over, AeroPress, French Press',
-      'Grinder calibration & troubleshooting',
-      'Menu planning & drink presentation',
-      'Hygiene & café workflow management',
-    ],
-    curriculum: [
-      { title: 'Week 1: Advanced Espresso & Latte Art', lessons: ['Advanced espresso science & flavor balance', 'Latte art fundamentals (hearts, tulips)', 'Grinder calibration', 'Drink presentation'] },
-      { title: 'Week 2: Brewing Methods & Menu Planning', lessons: ['Pour-over techniques', 'AeroPress & French Press', 'Menu planning', 'Flavor balancing'] },
-      { title: 'Week 3: Workflow & Troubleshooting', lessons: ['Café workflow management', 'Equipment troubleshooting', 'Hygiene standards', 'Customer service excellence'] },
-      { title: 'Week 4: Final Assessment & Practice', lessons: ['Speed & efficiency drills', 'Quality control', 'Practical assessment', 'Career guidance'] },
-    ],
-    requirements: [
-      'Completed Foundation Barista Course or basic barista knowledge',
-      'Basic espresso machine familiarity',
-      'Passion for coffee and café work',
-    ],
-    certificate: true,
-    outcomeNote: 'Become a skilled barista ready for professional café work or your own setup.',
-  },
-  'advanced-barista-course': {
-    title: '#3. ADVANCED BARISTA COURSE',
-    subtitle: 'Master the Art of Coffee!',
-    duration: '40 Days',
-    level: 'advanced',
-    price: 18000,
-    currency: 'NPR',
-    image: null,
-    description: 'For experienced baristas looking to refine advanced techniques. Master advanced latte art, signature beverage creation, coffee tasting, and café leadership skills. Develop into a master barista with technical, creative, and management abilities.',
-    outcomes: [
-      'Advanced latte art (Hearts, Rosetta, Tulips and Free Pours)',
-      'Signature beverage creation & recipe design',
-      'Coffee tasting & sensory evaluation',
-      'Machine calibration & maintenance mastery',
-      'Café leadership & management',
-      'Coffee business & entrepreneurship basics',
-    ],
-    curriculum: [
-      { title: 'Week 1-2: Advanced Latte Art & Beverage Design', lessons: ['Advanced pouring techniques (Rosetta, Tulips, Swans)', 'Free pour practice', 'Signature beverage creation', 'Recipe design & costing'] },
-      { title: 'Week 3-4: Sensory & Machine Mastery', lessons: ['Coffee tasting & sensory evaluation', 'Machine calibration mastery', 'Preventive maintenance', 'Equipment deep-dive'] },
-      { title: 'Week 5-6: Leadership & Business', lessons: ['Café leadership & team management', 'Inventory & cost control', 'Coffee business basics', 'Entrepreneurship essentials'] },
-      { title: 'Week 7-8: Final Project & Assessment', lessons: ['Signature drink portfolio', 'Speed & quality certification', 'Business plan presentation', 'Final practical exam'] },
-    ],
-    requirements: [
-      'Completed Full Barista Course or 6+ months café experience',
-      'Proficient in espresso extraction and milk texturing',
-      'Basic latte art skills',
-    ],
-    certificate: true,
-    outcomeNote: 'Develop into a master barista with technical, creative, and leadership skills.',
-  },
-};
 
 const levelVariant = {
   beginner: 'success',
@@ -111,8 +18,19 @@ const levelVariant = {
 
 const CourseDetail = () => {
   const { slug } = useParams();
-  const course = coursesData[slug];
+  const [course, setCourse] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [openSections, setOpenSections] = useState({});
+
+  useEffect(() => {
+    setLoading(true);
+    api.get(`/courses/${slug}`)
+      .then((res) => setCourse(res.data))
+      .catch(() => setCourse(null))
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) return <Loader />;
 
   const toggleSection = (index) => {
     setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
@@ -131,7 +49,7 @@ const CourseDetail = () => {
     );
   }
 
-  const currencySymbol = course.currency === 'NPR' ? 'Rs.' : '$';
+  const currencySymbol = 'Rs.';
 
   return (
     <PageTransition>
@@ -157,11 +75,9 @@ const CourseDetail = () => {
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-6">
               {course.title}
             </h1>
-            {course.subtitle && (
-              <span className="inline-block text-accent font-body font-semibold text-lg mb-4">
-                {course.subtitle}
-              </span>
-            )}
+            <span className="inline-block text-accent font-body font-semibold text-lg mb-4">
+              {course.level}
+            </span>
             <p className="font-body text-cream/60 text-lg leading-relaxed">
               {course.description.substring(0, 120)}...
             </p>
@@ -178,7 +94,7 @@ const CourseDetail = () => {
               </svg>
               <span className="font-body text-sm">{course.duration}</span>
             </div>
-            <Badge variant={levelVariant[course.level]}>{course.level}</Badge>
+            <Badge variant={levelVariant[course.level?.toLowerCase()]}>{course.level}</Badge>
             <div className="flex items-center gap-3 text-cream/80">
               <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -217,7 +133,7 @@ const CourseDetail = () => {
                   viewport={{ once: true }}
                   className="grid grid-cols-1 sm:grid-cols-2 gap-3"
                 >
-                  {course.outcomes.map((outcome, i) => (
+                  {(course.learningOutcomes || []).map((outcome, i) => (
                     <motion.li
                       key={i}
                       variants={fadeIn('up', i * 0.05)}
@@ -230,12 +146,12 @@ const CourseDetail = () => {
                     </motion.li>
                   ))}
                 </motion.ul>
-                {course.outcomeNote && (
+                {course.learningOutcomes?.[0] && (
                   <motion.div
                     variants={fadeIn('up')}
                     className="mt-6 p-5 bg-accent/10 rounded-xl border border-accent/20"
                   >
-                    <p className="font-body text-accent font-semibold text-sm">{course.outcomeNote}</p>
+                    <p className="font-body text-accent font-semibold text-sm">Master these skills with {course.title}.</p>
                   </motion.div>
                 )}
               </motion.div>
@@ -283,7 +199,7 @@ const CourseDetail = () => {
                             className="overflow-hidden"
                           >
                             <ul className="px-5 pb-5 space-y-2">
-                              {week.lessons.map((lesson, i) => (
+                              {(week.items || []).map((lesson, i) => (
                                 <li key={i} className="flex items-center gap-3 font-body text-sm text-text/60">
                                   <span className="w-1.5 h-1.5 rounded-full bg-accent/60" />
                                   {lesson}
@@ -318,7 +234,7 @@ const CourseDetail = () => {
                   </div>
                   <div className="flex items-center justify-between font-body text-sm">
                     <span className="text-text/60">Level</span>
-                    <Badge variant={levelVariant[course.level]}>{course.level}</Badge>
+                    <Badge variant={levelVariant[course.level?.toLowerCase()]}>{course.level}</Badge>
                   </div>
                   <div className="flex items-center justify-between font-body text-sm">
                     <span className="text-text/60">Fee</span>
@@ -331,7 +247,7 @@ const CourseDetail = () => {
                 </Button>
               </motion.div>
 
-              {course.certificate && (
+              {course.certificateIncluded && (
                 <motion.div
                   variants={fadeIn('up', 0.1)}
                   initial="hidden"
