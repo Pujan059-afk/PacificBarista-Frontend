@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import api from '../../services/api';
@@ -7,6 +7,10 @@ import PageTransition from '../../components/common/PageTransition';
 import Button from '../../components/ui/Button';
 import { FiChevronLeft, FiUpload } from 'react-icons/fi';
 import { slugify } from '../../utils/helpers';
+import TiptapEditor from '../../components/ui/TiptapEditor';
+
+const stripHtml = (text) => text?.replace(/<\/?[^>]+(>|$)/g, '') || '';
+const isHtml = (text) => /<[a-z][\s\S]*>/i.test(text);
 
 const AddEditBlog = () => {
   const { id } = useParams();
@@ -21,12 +25,36 @@ const AddEditBlog = () => {
     excerpt: '',
     category: '',
     tags: '',
+    author: '',
+    isPublished: false,
   });
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
   const [errors, setErrors] = useState({});
+  const [dragOver, setDragOver] = useState(false);
+  const imageInputRef = useRef(null);
+
+  useEffect(() => {
+    const handlePaste = (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) {
+            setImage(file);
+            setImagePreview(URL.createObjectURL(file));
+            e.preventDefault();
+            break;
+          }
+        }
+      }
+    };
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+  }, []);
 
   useEffect(() => {
     if (isEdit) {
@@ -37,12 +65,14 @@ const AddEditBlog = () => {
           setForm({
             title: blog.title || '',
             slug: blog.slug || '',
-            content: blog.content || '',
-            excerpt: blog.excerpt || '',
+            content: isHtml(blog.content) ? blog.content : stripHtml(blog.content),
+            excerpt: stripHtml(blog.excerpt),
             category: blog.category || '',
             tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || ''),
+            author: blog.author || '',
+            isPublished: blog.isPublished || false,
           });
-          if (blog.image) setImagePreview(blog.image);
+          if (blog.image?.url) setImagePreview(blog.image.url);
         } catch (err) {
           showToast('Failed to load blog', 'error');
           navigate('/admin/blogs');
@@ -65,18 +95,39 @@ const AddEditBlog = () => {
     setErrors((prev) => ({ ...prev, [field]: '' }));
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (file) => {
     if (file) {
       setImage(file);
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
+  const handleImageInput = (e) => {
+    if (e.target.files?.[0]) handleImageChange(e.target.files[0]);
+    e.target.value = '';
+  };
+
+  const handleImageDrop = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer?.files?.[0];
+    if (file?.type.startsWith('image/')) handleImageChange(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
   const validate = () => {
     const errs = {};
     if (!form.title.trim()) errs.title = 'Title is required';
-    if (!form.content.trim()) errs.content = 'Content is required';
+    if (!stripHtml(form.content).trim()) errs.content = 'Content is required';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -185,6 +236,16 @@ const AddEditBlog = () => {
               />
             </div>
             <div>
+              <label className={labelClass}>Author</label>
+              <input
+                type="text"
+                value={form.author}
+                onChange={(e) => handleChange('author', e.target.value)}
+                className={inputClass('author')}
+                placeholder="Author name"
+              />
+            </div>
+            <div>
               <label className={labelClass}>Tags (comma separated)</label>
               <input
                 type="text"
@@ -193,6 +254,18 @@ const AddEditBlog = () => {
                 className={inputClass('tags')}
                 placeholder="espresso, latte, tips"
               />
+            </div>
+            <div className="flex items-center gap-3 pt-6">
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.isPublished}
+                  onChange={(e) => handleChange('isPublished', e.target.checked)}
+                  className="sr-only peer"
+                />
+                <div className="w-10 h-5 bg-primary/20 rounded-full peer peer-checked:bg-accent peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all" />
+              </label>
+              <span className="font-body text-sm text-text/60">Publish immediately</span>
             </div>
           </div>
           <div className="mt-4">
@@ -206,10 +279,9 @@ const AddEditBlog = () => {
           </div>
           <div className="mt-4">
             <label className={labelClass}>Content</label>
-            <textarea
-              value={form.content}
-              onChange={(e) => handleChange('content', e.target.value)}
-              className={`${inputClass('content')} min-h-[300px] resize-y`}
+            <TiptapEditor
+              content={form.content}
+              onChange={(html) => handleChange('content', html)}
               placeholder="Write your blog content here..."
             />
             {errors.content && <p className="text-red-500 text-xs mt-1 font-body">{errors.content}</p>}
@@ -218,22 +290,32 @@ const AddEditBlog = () => {
 
         <div className="bg-white rounded-xl shadow-sm border border-primary/5 p-6">
           <h2 className="font-heading text-lg font-bold text-primary mb-4">Featured Image</h2>
-          <div className="flex items-start gap-4">
-            <div className="w-32 h-24 rounded-lg border-2 border-dashed border-primary/10 overflow-hidden flex items-center justify-center bg-cream shrink-0">
-              {imagePreview ? (
-                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-              ) : (
-                <FiUpload className="w-6 h-6 text-text/20" />
-              )}
-            </div>
-            <div>
-              <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-cream border border-primary/10 rounded-lg cursor-pointer hover:border-accent/30 transition-colors font-body text-sm text-text">
-                <FiUpload className="w-4 h-4" />
-                Upload Image
-                <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
-              </label>
-              <p className="font-body text-xs text-text/30 mt-2">Recommended: 1200x630px, JPG or PNG</p>
-            </div>
+          <div
+            onDrop={handleImageDrop}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onClick={() => imageInputRef.current?.click()}
+            className={`relative rounded-xl border-2 border-dashed p-8 text-center cursor-pointer transition-all duration-300 ${
+              dragOver
+                ? 'border-accent bg-accent/5 scale-[1.01]'
+                : 'border-primary/10 hover:border-accent/30 hover:bg-accent/5'
+            }`}
+          >
+            {imagePreview ? (
+              <div className="max-w-xs mx-auto">
+                <img src={imagePreview} alt="Preview" className="w-full h-40 object-cover rounded-lg" />
+                <p className="font-body text-xs text-text/30 mt-2">Click or drag to change</p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <FiUpload className={`w-8 h-8 ${dragOver ? 'text-accent' : 'text-text/30'}`} />
+                <p className="font-body text-sm text-text/50">
+                  {dragOver ? 'Drop image here' : 'Click, drag & drop, or paste (Ctrl+V)'}
+                </p>
+                <p className="font-body text-xs text-text/30">Recommended: 1200x630px, JPG or PNG</p>
+              </div>
+            )}
+            <input ref={imageInputRef} type="file" accept="image/*" onChange={handleImageInput} className="hidden" />
           </div>
         </div>
 

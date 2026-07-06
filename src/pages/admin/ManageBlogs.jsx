@@ -22,7 +22,7 @@ const ManageBlogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const res = await api.get('/blogs');
+      const res = await api.get('/blogs/all');
       setBlogs(res.data?.blogs || res.data || []);
     } catch (err) {
       showToast('Failed to load blogs', 'error');
@@ -110,8 +110,8 @@ const ManageBlogs = () => {
                   >
                     <td className="py-3 pr-4 hidden sm:table-cell">
                       <div className="w-12 h-9 rounded overflow-hidden bg-primary/5">
-                        {blog.image ? (
-                          <img src={blog.image} alt="" className="w-full h-full object-cover" />
+                        {blog.image?.url ? (
+                          <img src={blog.image.url} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-text/20">
                             <FiMessageSquare className="w-4 h-4" />

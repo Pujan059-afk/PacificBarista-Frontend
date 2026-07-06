@@ -1,114 +1,53 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiSearch, FiCalendar, FiUser, FiArrowRight } from 'react-icons/fi';
+import { FiSearch, FiCalendar, FiUser, FiArrowRight, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import PageTransition from '../components/common/PageTransition';
+import Loader from '../components/common/Loader';
+import api from '../services/api';
 import { fadeIn, staggerContainer } from '../animations/index';
-
-const posts = [
-  {
-    id: 1,
-    title: 'The Art of Espresso: A Beginner\'s Guide',
-    category: 'Training',
-    date: 'June 28, 2026',
-    author: 'Prabin Gurung',
-    excerpt: 'Master the fundamentals of espresso extraction with our comprehensive guide. From grind size to tamping pressure, learn what makes the perfect shot.',
-    slug: 'art-of-espresso-beginners-guide',
-    gradient: 'from-amber-600 to-orange-400',
-  },
-  {
-    id: 2,
-    title: 'Understanding Coffee Roast Profiles',
-    category: 'Coffee Science',
-    date: 'June 22, 2026',
-    author: 'Sagar Adhikari',
-    excerpt: 'Dive into the science of coffee roasting and understand how different roast levels affect flavor, aroma, and body.',
-    slug: 'understanding-coffee-roast-profiles',
-    gradient: 'from-emerald-600 to-teal-400',
-  },
-  {
-    id: 3,
-    title: '5 Essential Latte Art Patterns for Beginners',
-    category: 'Techniques',
-    date: 'June 15, 2026',
-    author: 'Anita Sharma',
-    excerpt: 'Start your latte art journey with these five fundamental patterns. Practice tips and common mistakes to avoid.',
-    slug: 'essential-latte-art-patterns-beginners',
-    gradient: 'from-rose-500 to-pink-400',
-  },
-  {
-    id: 4,
-    title: 'Choosing the Right Coffee Beans for Your Café',
-    category: 'Business',
-    date: 'June 8, 2026',
-    author: 'Bishal Thapa',
-    excerpt: 'A comprehensive guide to selecting coffee beans for your café, covering origin, roast level, and supplier relationships.',
-    slug: 'choosing-right-coffee-beans-cafe',
-    gradient: 'from-blue-600 to-cyan-400',
-  },
-  {
-    id: 5,
-    title: 'The Science of Milk Texturing',
-    category: 'Training',
-    date: 'June 1, 2026',
-    author: 'Renu KC',
-    excerpt: 'Perfect microfoam is the foundation of great milk-based drinks. Learn the physics and technique behind silky smooth milk.',
-    slug: 'science-of-milk-texturing',
-    gradient: 'from-violet-600 to-purple-400',
-  },
-  {
-    id: 6,
-    title: 'Coffee Trends to Watch in 2026',
-    category: 'Industry',
-    date: 'May 25, 2026',
-    author: 'Kiran Poudel',
-    excerpt: 'Stay ahead of the curve with our predictions for the biggest coffee trends shaping the specialty coffee industry.',
-    slug: 'coffee-trends-2026',
-    gradient: 'from-indigo-600 to-blue-400',
-  },
-  {
-    id: 7,
-    title: 'Why Pokhara is Becoming a Hub for Barista Training',
-    category: 'Training',
-    date: 'July 3, 2026',
-    author: 'Pacific Barista Team',
-    excerpt: 'Discover why Pokhara, Nepal is emerging as a prime destination for professional barista training with international standards.',
-    slug: 'pokhara-barista-training-hub',
-    gradient: 'from-orange-600 to-red-400',
-  },
-  {
-    id: 8,
-    title: 'Food Safety Standards Every Barista Must Know',
-    category: 'Training',
-    date: 'June 29, 2026',
-    author: 'Pacific Barista Team',
-    excerpt: 'Essential food safety and hygiene practices for baristas. Learn about health & safety measurements at work to maintain international standards.',
-    slug: 'food-safety-standards-barista',
-    gradient: 'from-green-600 to-lime-400',
-  },
-];
-
-const categories = ['All', 'Training', 'Coffee Science', 'Techniques', 'Business', 'Industry'];
 
 const ITEMS_PER_PAGE = 4;
 
+const gradients = [
+  'from-amber-600 to-orange-400',
+  'from-emerald-600 to-teal-400',
+  'from-rose-500 to-pink-400',
+  'from-blue-600 to-cyan-400',
+  'from-violet-600 to-purple-400',
+  'from-indigo-600 to-blue-400',
+  'from-orange-600 to-red-400',
+  'from-green-600 to-lime-400',
+];
+
 const Blog = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [pages, setPages] = useState(0);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filtered = posts.filter((post) => {
-    const matchSearch = post.title.toLowerCase().includes(search.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(search.toLowerCase());
-    const matchCategory = activeCategory === 'All' || post.category === activeCategory;
-    return matchSearch && matchCategory;
-  });
+  useEffect(() => {
+    setLoading(true);
+    const params = { page: currentPage, limit: ITEMS_PER_PAGE };
+    if (search) params.search = search;
+    if (activeCategory !== 'All') params.category = activeCategory;
+    api.get('/blogs', { params })
+      .then((res) => {
+        setPosts(res.data.blogs || []);
+        setTotal(res.data.total || 0);
+        setPages(res.data.pages || 0);
+      })
+      .catch(() => { setPosts([]); setTotal(0); setPages(0); })
+      .finally(() => setLoading(false));
+  }, [currentPage, search, activeCategory]);
 
-  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-  const paginated = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const categories = ['All', ...new Set(posts.map((p) => p.category).filter(Boolean))];
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -170,95 +109,108 @@ const Blog = () => {
             </div>
           </div>
 
-          <motion.div
-            key={activeCategory + search + currentPage}
-            variants={staggerContainer(0.1)}
-            initial="hidden"
-            animate="show"
-            className="grid md:grid-cols-2 gap-8"
-          >
-            {paginated.map((post, i) => (
-              <motion.div
-                key={post.id}
-                variants={fadeIn('up', i * 0.1)}
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group"
-              >
-                <Link to={`/blog/${post.slug}`}>
-                  <div className={`h-52 bg-gradient-to-br ${post.gradient} flex items-center justify-center relative`}>
-                    <span className="text-2xl font-heading font-bold text-white/30 uppercase tracking-widest">{post.category}</span>
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                  </div>
-                </Link>
-                <div className="p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Badge variant="accent">{post.category}</Badge>
-                    <span className="flex items-center gap-1 text-xs text-text/50 font-body">
-                      <FiCalendar className="w-3 h-3" />
-                      {post.date}
-                    </span>
-                  </div>
-                  <Link to={`/blog/${post.slug}`}>
-                    <h3 className="font-heading text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
-                      {post.title}
-                    </h3>
-                  </Link>
-                  <p className="font-body text-text/70 text-sm leading-relaxed mb-4">{post.excerpt}</p>
-                  <div className="flex items-center justify-between pt-3 border-t border-primary/5">
-                    <span className="flex items-center gap-1 text-xs text-text/50 font-body">
-                      <FiUser className="w-3 h-3" />
-                      {post.author}
-                    </span>
-                    <Link
-                      to={`/blog/${post.slug}`}
-                      className="flex items-center gap-1 text-accent font-body text-sm font-medium hover:gap-2 transition-all duration-300"
-                    >
-                      Read More <FiArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {paginated.length === 0 && (
+          {loading ? (
+            <Loader />
+          ) : posts.length === 0 ? (
             <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="text-center py-16">
               <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FiSearch className="w-8 h-8 text-accent" />
               </div>
               <p className="font-body text-text/60 text-lg">No articles found matching your criteria.</p>
             </motion.div>
-          )}
+          ) : (
+            <>
+              <motion.div
+                key={activeCategory + search + currentPage}
+                variants={staggerContainer(0.1)}
+                initial="hidden"
+                animate="show"
+                className="grid md:grid-cols-2 gap-8"
+              >
+                {posts.map((post, i) => (
+                  <motion.div
+                    key={post._id || i}
+                    variants={fadeIn('up', i * 0.1)}
+                    className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 group"
+                  >
+                    <Link to={`/blog/${post.slug}`}>
+                      {post.image?.url ? (
+                        <div className="h-52 overflow-hidden relative">
+                          <img src={post.image.url} alt={post.title} className="w-full h-full object-contain bg-primary/5 group-hover:scale-105 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                        </div>
+                      ) : (
+                        <div className={`h-52 bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center relative`}>
+                          <span className="text-2xl font-heading font-bold text-white/30 uppercase tracking-widest">{post.category}</span>
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                        </div>
+                      )}
+                    </Link>
+                    <div className="p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Badge variant="accent">{post.category}</Badge>
+                        <span className="flex items-center gap-1 text-xs text-text/50 font-body">
+                          <FiCalendar className="w-3 h-3" />
+                          {post.publishedAt
+                            ? new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                            : new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </span>
+                      </div>
+                      <Link to={`/blog/${post.slug}`}>
+                        <h3 className="font-heading text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+                          {post.title}
+                        </h3>
+                      </Link>
+                      <p className="font-body text-text/70 text-sm leading-relaxed mb-4">{post.excerpt}</p>
+                      <div className="flex items-center justify-between pt-3 border-t border-primary/5">
+                        <span className="flex items-center gap-1 text-xs text-text/50 font-body">
+                          <FiUser className="w-3 h-3" />
+                          {post.author}
+                        </span>
+                        <Link
+                          to={`/blog/${post.slug}`}
+                          className="flex items-center gap-1 text-accent font-body text-sm font-medium hover:gap-2 transition-all duration-300"
+                        >
+                          Read More <FiArrowRight className="w-4 h-4" />
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
 
-          {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-2 mt-12">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-primary/10 text-text/60 hover:text-accent hover:border-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
-              >
-                <FiChevronLeft className="w-5 h-5" />
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`w-10 h-10 rounded-lg font-body font-medium text-sm transition-all duration-300 ${
-                    currentPage === page
-                      ? 'bg-accent text-white shadow-md'
-                      : 'bg-white border border-primary/10 text-text/60 hover:text-accent'
-                  }`}
-                >
-                  {page}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-primary/10 text-text/60 hover:text-accent hover:border-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
-              >
-                <FiChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+              {pages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-12">
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-primary/10 text-text/60 hover:text-accent hover:border-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+                  >
+                    <FiChevronLeft className="w-5 h-5" />
+                  </button>
+                  {Array.from({ length: pages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-10 h-10 rounded-lg font-body font-medium text-sm transition-all duration-300 ${
+                        currentPage === page
+                          ? 'bg-accent text-white shadow-md'
+                          : 'bg-white border border-primary/10 text-text/60 hover:text-accent'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === pages}
+                    className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border border-primary/10 text-text/60 hover:text-accent hover:border-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300"
+                  >
+                    <FiChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

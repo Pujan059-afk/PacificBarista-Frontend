@@ -1,38 +1,30 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { fadeIn, staggerContainer } from '../../animations';
 import SectionTitle from '../ui/SectionTitle';
 import Button from '../ui/Button';
+import Loader from '../common/Loader';
+import api from '../../services/api';
 import { IconArrowRight, IconCalendar, IconFlask, IconPalette, IconCoffee } from '../ui/Icons';
 
-const blogs = [
-  {
-    slug: 'art-of-pour-over',
-    title: 'The Art of Pour-Over: A Complete Guide',
-    excerpt: 'Discover the techniques and tips for mastering the perfect pour-over coffee at home or in a professional setting.',
-    date: 'June 15, 2026',
-    gradient: 'from-amber-500 to-amber-700',
-    Icon: IconFlask,
-  },
-  {
-    slug: 'latte-art-tips',
-    title: '5 Essential Latte Art Tips for Beginners',
-    excerpt: 'Start your latte art journey with these fundamental techniques that every barista should know before attempting advanced designs.',
-    date: 'June 8, 2026',
-    gradient: 'from-rose-500 to-rose-700',
-    Icon: IconPalette,
-  },
-  {
-    slug: 'coffee-bean-guide',
-    title: 'Understanding Coffee Bean Origins & Roasts',
-    excerpt: 'Learn how different growing regions and roast levels affect flavor profiles and how to choose the right beans for your brew.',
-    date: 'June 1, 2026',
-    gradient: 'from-emerald-500 to-emerald-700',
-    Icon: IconCoffee,
-  },
+const blogGradients = [
+  { gradient: 'from-amber-500 to-amber-700', Icon: IconFlask },
+  { gradient: 'from-rose-500 to-rose-700', Icon: IconPalette },
+  { gradient: 'from-emerald-500 to-emerald-700', Icon: IconCoffee },
 ];
 
 const LatestBlogs = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get('/blogs?limit=3')
+      .then((res) => setBlogs(res.data.blogs || []))
+      .catch(() => setBlogs([]))
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <section className="py-20 md:py-28 bg-cream">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,55 +34,73 @@ const LatestBlogs = () => {
           description="Stay updated with the latest coffee trends, tips, and stories from the Pacific Barista community."
         />
 
-        <motion.div
-          variants={staggerContainer(0.12)}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-50px' }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {blogs.map((blog, i) => (
-            <motion.article
-              key={i}
-              variants={fadeIn('up')}
-              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-            >
-              <Link to={`/blog/${blog.slug}`} className="block">
-                <div
-                  className={`relative h-48 bg-gradient-to-br ${blog.gradient} flex items-center justify-center overflow-hidden`}
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : blogs.length === 0 ? null : (
+          <motion.div
+            variants={staggerContainer(0.12)}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: '-50px' }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {blogs.map((blog, i) => {
+              const style = blogGradients[i % blogGradients.length];
+              const BlogIcon = style.Icon;
+              const date = blog.publishedAt
+                ? new Date(blog.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                : new Date(blog.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+              return (
+                <motion.article
+                  key={blog._id || i}
+                  variants={fadeIn('up')}
+                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
                 >
-                  <blog.Icon className="w-14 h-14 text-white/80" />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                </div>
-              </Link>
+                  <Link to={`/blog/${blog.slug}`} className="block">
+                    {blog.image?.url ? (
+                      <div className="relative h-48 overflow-hidden">
+                        <img src={blog.image.url} alt={blog.title} className="w-full h-full object-contain bg-primary/5 group-hover:scale-105 transition-transform duration-500" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                      </div>
+                    ) : (
+                      <div className={`relative h-48 bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden`}>
+                        <BlogIcon className="w-14 h-14 text-white/80" />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+                      </div>
+                    )}
+                  </Link>
 
-              <div className="p-6">
-                <div className="flex items-center gap-2 text-text/40 text-xs font-body mb-3">
-                  <IconCalendar className="w-3.5 h-3.5" />
-                  <span>{blog.date}</span>
-                </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 text-text/40 text-xs font-body mb-3">
+                      <IconCalendar className="w-3.5 h-3.5" />
+                      <span>{date}</span>
+                    </div>
 
-                <Link to={`/blog/${blog.slug}`}>
-                  <h3 className="font-heading text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors duration-300 leading-snug">
-                    {blog.title}
-                  </h3>
-                </Link>
+                    <Link to={`/blog/${blog.slug}`}>
+                      <h3 className="font-heading text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors duration-300 leading-snug">
+                        {blog.title}
+                      </h3>
+                    </Link>
 
-                <p className="font-body text-text/60 text-sm leading-relaxed mb-4 line-clamp-2">
-                  {blog.excerpt}
-                </p>
+                    <p className="font-body text-text/60 text-sm leading-relaxed mb-4 line-clamp-2">
+                      {blog.excerpt}
+                    </p>
 
-                <Link
-                  to={`/blog/${blog.slug}`}
-                  className="inline-flex items-center gap-1.5 text-accent font-body text-sm font-semibold hover:gap-2 transition-all duration-300"
-                >
-                  Read More
-                  <IconArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </motion.article>
-          ))}
-        </motion.div>
+                    <Link
+                      to={`/blog/${blog.slug}`}
+                      className="inline-flex items-center gap-1.5 text-accent font-body text-sm font-semibold hover:gap-2 transition-all duration-300"
+                    >
+                      Read More
+                      <IconArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </motion.div>
+        )}
 
         <motion.div
           variants={fadeIn('up')}
