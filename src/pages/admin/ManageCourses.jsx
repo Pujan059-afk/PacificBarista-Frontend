@@ -6,7 +6,7 @@ import api from '../../services/api';
 import { useApp } from '../../contexts/AppContext';
 import PageTransition from '../../components/common/PageTransition';
 import Button from '../../components/ui/Button';
-import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiEye } from 'react-icons/fi';
+import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiBook } from 'react-icons/fi';
 
 const ManageCourses = () => {
   const { showToast } = useApp();
@@ -53,10 +53,9 @@ const ManageCourses = () => {
   );
 
   const levelColors = {
-    beginner: 'bg-green-100 text-green-700',
-    intermediate: 'bg-blue-100 text-blue-700',
-    advanced: 'bg-purple-100 text-purple-700',
-    professional: 'bg-orange-100 text-orange-700',
+    Beginner: 'bg-green-100 text-green-700',
+    Intermediate: 'bg-blue-100 text-blue-700',
+    Advanced: 'bg-purple-100 text-purple-700',
   };
 
   return (
@@ -123,8 +122,8 @@ const ManageCourses = () => {
                   >
                     <td className="py-3 pr-4">
                       <div className="w-12 h-9 rounded overflow-hidden bg-primary/5">
-                        {course.image ? (
-                          <img src={course.image} alt="" className="w-full h-full object-cover" />
+                        {course.image?.url ? (
+                          <img src={course.image.url} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-text/20">
                             <FiBook className="w-4 h-4" />
@@ -141,7 +140,7 @@ const ManageCourses = () => {
                       </span>
                     </td>
                     <td className="py-3 pr-4 hidden md:table-cell font-body text-sm text-text">
-                      {course.price ? `$${course.price}` : 'Free'}
+                      {course.price ? `Rs. ${course.price}` : 'Free'}
                     </td>
                     <td className="py-3 pr-4 hidden sm:table-cell">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-medium font-body ${course.featured ? 'bg-accent/10 text-accent' : 'bg-gray-100 text-gray-400'}`}>

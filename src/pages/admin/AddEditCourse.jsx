@@ -22,9 +22,9 @@ const AddEditCourse = () => {
     description: '',
     shortDescription: '',
     duration: '',
-    level: 'beginner',
+    level: 'Beginner',
     price: '',
-    curriculum: [{ sectionTitle: '', items: [''] }],
+    curriculum: [{ title: '', items: [''] }],
     learningOutcomes: [''],
     requirements: [''],
     certificateIncluded: false,
@@ -49,21 +49,21 @@ const AddEditCourse = () => {
             description: course.description || '',
             shortDescription: course.shortDescription || '',
             duration: course.duration || '',
-            level: course.level || 'beginner',
+            level: course.level || 'Beginner',
             price: course.price?.toString() || '',
             curriculum: course.curriculum?.length > 0
               ? course.curriculum.map((s) => ({
-                  sectionTitle: s.sectionTitle || '',
+                  title: s.title || '',
                   items: s.items?.length > 0 ? s.items : [''],
                 }))
-              : [{ sectionTitle: '', items: [''] }],
+              : [{ title: '', items: [''] }],
             learningOutcomes: course.learningOutcomes?.length > 0 ? course.learningOutcomes : [''],
             requirements: course.requirements?.length > 0 ? course.requirements : [''],
             certificateIncluded: course.certificateIncluded || false,
             featured: course.featured || false,
             isActive: course.isActive ?? true,
           });
-          if (course.image) setImagePreview(course.image);
+          if (course.image?.url) setImagePreview(course.image.url);
         } catch (err) {
           showToast('Failed to load course', 'error');
           navigate('/admin/courses');
@@ -116,7 +116,7 @@ const AddEditCourse = () => {
   const handleCurriculumSection = (index, value) => {
     setForm((prev) => {
       const curr = [...prev.curriculum];
-      curr[index] = { ...curr[index], sectionTitle: value };
+      curr[index] = { ...curr[index], title: value };
       return { ...prev, curriculum: curr };
     });
   };
@@ -134,7 +134,7 @@ const AddEditCourse = () => {
   const addCurriculumSection = () => {
     setForm((prev) => ({
       ...prev,
-      curriculum: [...prev.curriculum, { sectionTitle: '', items: [''] }],
+      curriculum: [...prev.curriculum, { title: '', items: [''] }],
     }));
   };
 
@@ -183,16 +183,16 @@ const AddEditCourse = () => {
         ...form,
         price: parseFloat(form.price) || 0,
         curriculum: form.curriculum.map((s) => ({
-          sectionTitle: s.sectionTitle,
+          title: s.title,
           items: s.items.filter((i) => i.trim()),
-        })).filter((s) => s.sectionTitle || s.items.length > 0),
+        })).filter((s) => s.title || s.items.length > 0),
         learningOutcomes: form.learningOutcomes.filter((o) => o.trim()),
         requirements: form.requirements.filter((r) => r.trim()),
       };
 
       const formData = new FormData();
       Object.keys(payload).forEach((key) => {
-        if (key === 'curriculum') {
+        if (['curriculum', 'learningOutcomes', 'requirements'].includes(key)) {
           formData.append(key, JSON.stringify(payload[key]));
         } else {
           formData.append(key, payload[key]);
@@ -390,7 +390,7 @@ const AddEditCourse = () => {
               </div>
               <input
                 type="text"
-                value={section.sectionTitle}
+                value={section.title}
                 onChange={(e) => handleCurriculumSection(secIdx, e.target.value)}
                 className="w-full px-3 py-2 bg-white border border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent mb-2"
                 placeholder="Section title (e.g. Week 1: Introduction)"

@@ -146,9 +146,15 @@ const BlogPost = () => {
                   return (
                     <motion.div key={rp._id || i} variants={fadeIn('up', i * 0.1)} initial="hidden" whileInView="show" viewport={{ once: true }}>
                       <Link to={`/blog/${rp.slug}`} className="group block">
-                        <div className={`h-32 bg-gradient-to-br ${rg} rounded-xl flex items-center justify-center mb-3`}>
-                          <span className="font-heading text-lg font-bold text-white/20 uppercase tracking-widest">Article</span>
-                        </div>
+                        {rp.image?.url ? (
+                          <div className="h-32 rounded-xl overflow-hidden mb-3">
+                            <img src={rp.image.url} alt={rp.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          </div>
+                        ) : (
+                          <div className={`h-32 bg-gradient-to-br ${rg} rounded-xl flex items-center justify-center mb-3`}>
+                            <span className="font-heading text-lg font-bold text-white/20 uppercase tracking-widest">Article</span>
+                          </div>
+                        )}
                         <h3 className="font-heading text-base font-bold text-primary group-hover:text-accent transition-colors duration-300">{rp.title}</h3>
                       </Link>
                     </motion.div>

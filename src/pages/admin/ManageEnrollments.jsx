@@ -59,7 +59,7 @@ const ManageEnrollments = () => {
       e.email?.toLowerCase().includes(search.toLowerCase()) ||
       e.courseName?.toLowerCase().includes(search.toLowerCase()) ||
       e.phone?.includes(search);
-    const matchesStatus = statusFilter ? e.status === statusFilter : true;
+    const matchesStatus = statusFilter ? e.status?.toLowerCase() === statusFilter : true;
     return matchesSearch && matchesStatus;
   });
 
@@ -142,8 +142,8 @@ const ManageEnrollments = () => {
                     </td>
                     <td className="py-3 pr-4 hidden sm:table-cell font-body text-sm text-text/50">{enr.phone || 'N/A'}</td>
                     <td className="py-3 pr-4">
-                      <span className={`px-2.5 py-1 rounded-full text-xs font-medium font-body ${statusStyles[enr.status] || 'bg-gray-100 text-gray-700'}`}>
-                        {enr.status || 'pending'}
+                      <span className={`px-2.5 py-1 rounded-full text-xs font-medium font-body ${statusStyles[enr.status?.toLowerCase()] || 'bg-gray-100 text-gray-700'}`}>
+                        {enr.status || 'Pending'}
                       </span>
                     </td>
                     <td className="py-3">
@@ -155,10 +155,10 @@ const ManageEnrollments = () => {
                         >
                           <FiEye className="w-4 h-4" />
                         </button>
-                        {enr.status === 'pending' && (
+                        {enr.status === 'Pending' && (
                           <>
                             <button
-                              onClick={() => handleStatusChange(enr._id, 'approved')}
+                              onClick={() => handleStatusChange(enr._id, 'Approved')}
                               disabled={processing === enr._id}
                               className="p-2 rounded-lg hover:bg-green-50 text-text/40 hover:text-green-500 transition-colors"
                               title="Approve"
@@ -170,7 +170,7 @@ const ManageEnrollments = () => {
                               )}
                             </button>
                             <button
-                              onClick={() => handleStatusChange(enr._id, 'rejected')}
+                              onClick={() => handleStatusChange(enr._id, 'Rejected')}
                               disabled={processing === enr._id}
                               className="p-2 rounded-lg hover:bg-red-50 text-text/40 hover:text-red-500 transition-colors"
                               title="Reject"
@@ -220,8 +220,8 @@ const ManageEnrollments = () => {
                   </div>
                   <div>
                     <p className="font-body text-xs text-text/40 uppercase tracking-wider">Status</p>
-                    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium font-body mt-1 ${statusStyles[viewItem.status] || 'bg-gray-100 text-gray-700'}`}>
-                      {viewItem.status || 'pending'}
+                    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium font-body mt-1 ${statusStyles[viewItem.status?.toLowerCase()] || 'bg-gray-100 text-gray-700'}`}>
+                      {viewItem.status || 'Pending'}
                     </span>
                   </div>
                   <div>
@@ -249,18 +249,18 @@ const ManageEnrollments = () => {
                     </p>
                   </div>
                 </div>
-                {viewItem.status === 'pending' && (
+                {viewItem.status === 'Pending' && (
                   <div className="flex gap-3 pt-2">
                     <Button
                       size="sm"
                       loading={processing === viewItem._id}
-                      onClick={() => handleStatusChange(viewItem._id, 'approved')}
+                      onClick={() => handleStatusChange(viewItem._id, 'Approved')}
                       className="flex-1 justify-center"
                     >
                       Approve
                     </Button>
                     <button
-                      onClick={() => handleStatusChange(viewItem._id, 'rejected')}
+                      onClick={() => handleStatusChange(viewItem._id, 'Rejected')}
                       disabled={processing === viewItem._id}
                       className="flex-1 px-4 py-2 rounded-lg border-2 border-red-200 text-red-500 font-body text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-60"
                     >

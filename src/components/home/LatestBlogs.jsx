@@ -44,7 +44,7 @@ const LatestBlogs = () => {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: '-50px' }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
           >
             {blogs.map((blog, i) => {
               const style = blogGradients[i % blogGradients.length];
@@ -60,37 +60,37 @@ const LatestBlogs = () => {
                 >
                   <Link to={`/blog/${blog.slug}`} className="block">
                     {blog.image?.url ? (
-                      <div className="relative h-48 overflow-hidden">
-                        <img src={blog.image.url} alt={blog.title} className="w-full h-full object-contain bg-primary/5 group-hover:scale-105 transition-transform duration-500" />
+                      <div className="relative h-36 overflow-hidden">
+                        <img src={blog.image.url} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                       </div>
                     ) : (
-                      <div className={`relative h-48 bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden`}>
-                        <BlogIcon className="w-14 h-14 text-white/80" />
+                      <div className={`relative h-36 bg-gradient-to-br ${style.gradient} flex items-center justify-center overflow-hidden`}>
+                        <BlogIcon className="w-10 h-10 text-white/80" />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
                       </div>
                     )}
                   </Link>
 
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 text-text/40 text-xs font-body mb-3">
-                      <IconCalendar className="w-3.5 h-3.5" />
+                  <div className="px-4 pt-3 pb-3">
+                    <div className="flex items-center gap-2 text-text/40 text-xs font-body mb-1.5">
+                      <IconCalendar className="w-3 h-3" />
                       <span>{date}</span>
                     </div>
 
                     <Link to={`/blog/${blog.slug}`}>
-                      <h3 className="font-heading text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors duration-300 leading-snug">
+                      <h3 className="font-heading text-base font-semibold text-primary mb-1 group-hover:text-accent transition-colors duration-300 leading-snug">
                         {blog.title}
                       </h3>
                     </Link>
 
-                    <p className="font-body text-text/60 text-sm leading-relaxed mb-4 line-clamp-2">
+                    <p className="font-body text-text/60 text-sm leading-relaxed mb-2 line-clamp-2">
                       {blog.excerpt}
                     </p>
 
                     <Link
                       to={`/blog/${blog.slug}`}
-                      className="inline-flex items-center gap-1.5 text-accent font-body text-sm font-semibold hover:gap-2 transition-all duration-300"
+                      className="inline-flex items-center gap-1 text-accent font-body text-sm font-semibold hover:gap-2 transition-all duration-300"
                     >
                       Read More
                       <IconArrowRight className="w-3.5 h-3.5" />

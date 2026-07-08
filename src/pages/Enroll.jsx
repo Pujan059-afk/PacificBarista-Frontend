@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm } from 'react-hook-form';
@@ -9,13 +9,6 @@ import PageTransition from '../components/common/PageTransition';
 import { useApp } from '../contexts/AppContext';
 import api from '../services/api';
 import { fadeIn } from '../animations/index';
-
-const courses = [
-  { value: 'foundation-barista-certificate', label: 'Foundation Barista Certificate - $299' },
-  { value: 'professional-barista-diploma', label: 'Professional Barista Diploma - $799' },
-  { value: 'master-barista-certification', label: 'Master Barista Certification - $1,499' },
-  { value: 'q-grader-prep', label: 'Specialty Coffee Q-Grader Prep - $899' },
-];
 
 const experienceLevels = [
   { value: 'none', label: 'No Experience' },
@@ -29,7 +22,26 @@ const Enroll = () => {
   const { showToast } = useApp();
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [courses, setCourses] = useState([]);
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await api.get('/courses?limit=50');
+        const list = res.data?.courses || res.data || [];
+        setCourses(
+          list.map((c) => ({
+            value: c.slug,
+            label: c.title,
+          }))
+        );
+      } catch {
+        setCourses([]);
+      }
+    };
+    fetchCourses();
+  }, []);
 
   const selectedCourse = watch('course');
 

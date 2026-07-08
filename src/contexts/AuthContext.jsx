@@ -36,8 +36,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = useCallback(async (email, password) => {
-    const res = await api.post('/auth/login', { email, password });
+  const login = useCallback(async (email, otp) => {
+    const res = await api.post('/auth/verify-otp', { email, otp });
     const { token, user: userData } = res.data;
     const userInfo = userData || res.data;
     localStorage.setItem('token', token);

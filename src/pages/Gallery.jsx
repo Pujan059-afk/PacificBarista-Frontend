@@ -1,34 +1,45 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiImage, FiX, FiChevronLeft, FiChevronRight, FiSearch } from 'react-icons/fi';
 import PageTransition from '../components/common/PageTransition';
+import Loader from '../components/common/Loader';
+import api from '../services/api';
 import { fadeIn, staggerContainer } from '../animations/index';
 
-const categories = ['All', 'Training', 'Events', 'Facility', 'Students'];
-
-const galleryImages = [
-  { id: 1, title: 'Latte Art Practice Session', category: 'Training', gradient: 'from-amber-500 to-orange-400' },
-  { id: 2, title: 'Espresso Machine Training', category: 'Training', gradient: 'from-rose-500 to-pink-400' },
-  { id: 3, title: 'Annual Barista Championship', category: 'Events', gradient: 'from-violet-500 to-purple-400' },
-  { id: 4, title: 'Coffee Tasting Workshop', category: 'Events', gradient: 'from-emerald-500 to-teal-400' },
-  { id: 5, title: 'Our Training Facility', category: 'Facility', gradient: 'from-blue-500 to-cyan-400' },
-  { id: 6, title: 'Professional Coffee Lab', category: 'Facility', gradient: 'from-indigo-500 to-blue-400' },
-  { id: 7, title: 'Student Graduation Day', category: 'Students', gradient: 'from-amber-600 to-yellow-400' },
-  { id: 8, title: 'Field Trip to Coffee Farm', category: 'Students', gradient: 'from-green-500 to-emerald-400' },
-  { id: 9, title: 'Pour-Over Technique Class', category: 'Training', gradient: 'from-orange-500 to-amber-400' },
-  { id: 10, title: 'Industry Networking Event', category: 'Events', gradient: 'from-pink-500 to-rose-400' },
-  { id: 11, title: 'Roastery Tour', category: 'Facility', gradient: 'from-cyan-500 to-teal-400' },
-  { id: 12, title: 'Student Portfolio Review', category: 'Students', gradient: 'from-purple-500 to-violet-400' },
+const gradients = [
+  'from-amber-500 to-orange-400',
+  'from-rose-500 to-pink-400',
+  'from-violet-500 to-purple-400',
+  'from-emerald-500 to-teal-400',
+  'from-blue-500 to-cyan-400',
+  'from-indigo-500 to-blue-400',
+  'from-amber-600 to-yellow-400',
+  'from-green-500 to-emerald-400',
+  'from-orange-500 to-amber-400',
+  'from-pink-500 to-rose-400',
+  'from-cyan-500 to-teal-400',
+  'from-purple-500 to-violet-400',
 ];
 
 const Gallery = () => {
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('All');
   const [lightbox, setLightbox] = useState(null);
 
+  useEffect(() => {
+    api.get('/gallery')
+      .then((res) => setImages(res.data?.images || res.data || []))
+      .catch(() => setImages([]))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const categories = ['All', ...new Set(images.map((img) => img.category).filter(Boolean))];
+
   const filtered = activeCategory === 'All'
-    ? galleryImages
-    : galleryImages.filter((img) => img.category === activeCategory);
+    ? images
+    : images.filter((img) => img.category === activeCategory);
 
   const openLightbox = useCallback((index) => setLightbox(index), []);
   const closeLightbox = useCallback(() => setLightbox(null), []);
@@ -40,6 +51,10 @@ const Gallery = () => {
   const goPrev = useCallback(() => {
     setLightbox((prev) => (prev - 1 + filtered.length) % filtered.length);
   }, [filtered.length]);
+
+  const getGradient = (i) => gradients[i % gradients.length];
+
+  if (loading) return <Loader />;
 
   return (
     <PageTransition>
@@ -66,61 +81,87 @@ const Gallery = () => {
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cream to-transparent" />
       </section>
 
-      <section className="py-20 bg-cream">
-        <div className="container-custom">
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2.5 rounded-full font-body text-sm font-medium transition-all duration-300 ${
-                  activeCategory === cat
-                    ? 'bg-accent text-white shadow-lg scale-105'
-                    : 'bg-white text-text/60 hover:text-accent hover:bg-accent/5 border border-primary/10'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+      {images.length === 0 ? (
+        <section className="py-20 bg-cream">
+          <div className="container-custom text-center">
+            <FiImage className="w-16 h-16 mx-auto text-text/20 mb-4" />
+            <p className="font-body text-text/40">No gallery images yet. Check back soon!</p>
           </div>
+        </section>
+      ) : (
+        <section className="py-20 bg-cream">
+          <div className="container-custom">
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-6 py-2.5 rounded-full font-body text-sm font-medium transition-all duration-300 ${
+                    activeCategory === cat
+                      ? 'bg-accent text-white shadow-lg scale-105'
+                      : 'bg-white text-text/60 hover:text-accent hover:bg-accent/5 border border-primary/10'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
 
-          <motion.div
-            key={activeCategory}
-            variants={staggerContainer(0.05)}
-            initial="hidden"
-            animate="show"
-            className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
-          >
-            {filtered.map((img, i) => (
-              <motion.div
-                key={img.id}
-                variants={fadeIn('up', i * 0.05)}
-                onClick={() => openLightbox(i)}
-                className={`break-inside-avoid cursor-pointer group relative rounded-2xl overflow-hidden shadow-md ${
-                  i % 3 === 0 ? '' : i % 3 === 1 ? '' : ''
-                }`}
-              >
-                <div className={`w-full h-64 bg-gradient-to-br ${img.gradient} relative`}>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <FiImage className="w-12 h-12 text-white/30" />
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                      <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <FiSearch className="w-6 h-6 text-white" />
+            <motion.div
+              key={activeCategory}
+              variants={staggerContainer(0.05)}
+              initial="hidden"
+              animate="show"
+              className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
+            >
+              {filtered.map((img, i) => (
+                <motion.div
+                  key={img._id || i}
+                  variants={fadeIn('up', i * 0.05)}
+                  onClick={() => openLightbox(i)}
+                  className="break-inside-avoid cursor-pointer group relative rounded-2xl overflow-hidden shadow-md"
+                >
+                  {img.image?.url ? (
+                    <div className="relative w-full h-64">
+                      <img
+                        src={img.image.url}
+                        alt={img.category || 'Gallery image'}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
+                          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <FiSearch className="w-6 h-6 text-white" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                        <span className="text-white/80 text-xs font-body uppercase tracking-wider">{img.category}</span>
                       </div>
                     </div>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                    <h3 className="text-white font-heading font-bold text-lg">{img.title}</h3>
-                    <span className="text-white/70 text-xs font-body uppercase tracking-wider">{img.category}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+                  ) : (
+                    <div className={`w-full h-64 bg-gradient-to-br ${getGradient(i)} relative`}>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <FiImage className="w-12 h-12 text-white/30" />
+                      </div>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-500 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
+                          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <FiSearch className="w-6 h-6 text-white" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
+                        <span className="text-white/80 text-xs font-body uppercase tracking-wider">{img.category}</span>
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       <AnimatePresence>
         {lightbox !== null && filtered[lightbox] && (
@@ -154,13 +195,25 @@ const Gallery = () => {
               className="max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className={`w-full h-[60vh] bg-gradient-to-br ${filtered[lightbox].gradient} rounded-2xl flex items-center justify-center relative`}>
-                <FiImage className="w-24 h-24 text-white/20" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
-                  <h3 className="text-white font-heading text-2xl font-bold">{filtered[lightbox].title}</h3>
-                  <span className="text-white/60 font-body text-sm">{filtered[lightbox].category}</span>
+              {filtered[lightbox].image?.url ? (
+                <div className="w-full h-[60vh] rounded-2xl overflow-hidden relative">
+                  <img
+                    src={filtered[lightbox].image.url}
+                    alt={filtered[lightbox].category || 'Gallery image'}
+                    className="w-full h-full object-contain"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                    <span className="text-white/80 font-body text-sm">{filtered[lightbox].category}</span>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={`w-full h-[60vh] bg-gradient-to-br ${getGradient(lightbox)} rounded-2xl flex items-center justify-center relative`}>
+                  <FiImage className="w-24 h-24 text-white/20" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/60 to-transparent">
+                    <span className="text-white/80 font-body text-sm">{filtered[lightbox].category}</span>
+                  </div>
+                </div>
+              )}
             </motion.div>
 
             <button

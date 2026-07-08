@@ -153,14 +153,15 @@ const Contact = () => {
         </div>
       </section>
 
-      <section className="h-80 bg-primary/5 relative overflow-hidden">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <FiMapPin className="w-10 h-10 text-accent mx-auto mb-2" />
-            <p className="font-body text-text/50 text-sm">Newroad-9, Pokhara, Nepal</p>
-          </div>
-        </div>
-        <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/5" />
+      <section className="h-96 bg-primary/5 relative overflow-hidden">
+        <iframe
+          title="Pacific Barista Academy Location"
+          src="https://www.google.com/maps?q=Newroad-9+Pokhara+Nepal&output=embed"
+          className="w-full h-full border-0"
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </section>
     </PageTransition>
   );

@@ -9,11 +9,10 @@ import { FiPlus, FiEdit2, FiTrash2, FiUsers, FiUpload, FiX } from 'react-icons/f
 
 const emptyForm = {
   name: '',
-  role: '',
+  specialization: '',
   bio: '',
-  expertise: '',
-  socialLinks: { instagram: '', facebook: '', twitter: '' },
-  displayOrder: 0,
+  experience: '',
+  socialLinks: { linkedin: '', twitter: '', instagram: '' },
   isActive: true,
 };
 
@@ -60,14 +59,13 @@ const ManageTrainers = () => {
       setEditId(id);
       setForm({
         name: trainer.name || '',
-        role: trainer.role || '',
+        specialization: trainer.specialization || '',
         bio: trainer.bio || '',
-        expertise: Array.isArray(trainer.expertise) ? trainer.expertise.join(', ') : (trainer.expertise || ''),
-        socialLinks: trainer.socialLinks || { instagram: '', facebook: '', twitter: '' },
-        displayOrder: trainer.displayOrder || 0,
+        experience: trainer.experience?.toString() || '',
+        socialLinks: trainer.socialLinks || { linkedin: '', twitter: '', instagram: '' },
         isActive: trainer.isActive ?? true,
       });
-      if (trainer.image) setImagePreview(trainer.image);
+      if (trainer.photo?.url) setImagePreview(trainer.photo.url);
       setImage(null);
       setModalOpen(true);
     } catch (err) {
@@ -85,7 +83,7 @@ const ManageTrainers = () => {
     try {
       const payload = {
         ...form,
-        expertise: form.expertise.split(',').map((e) => e.trim()).filter(Boolean),
+        experience: parseInt(form.experience) || 0,
       };
 
       const formData = new FormData();
@@ -96,7 +94,7 @@ const ManageTrainers = () => {
           formData.append(key, payload[key]);
         }
       });
-      if (image) formData.append('image', image);
+      if (image) formData.append('photo', image);
 
       if (editId) {
         await api.put(`/trainers/${editId}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
@@ -157,7 +155,7 @@ const ManageTrainers = () => {
               <tr className="border-b border-primary/5">
                 <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3 pr-4 p-4">Image</th>
                 <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3 pr-4">Name</th>
-                <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3 pr-4 hidden md:table-cell">Role</th>
+                <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3 pr-4 hidden md:table-cell">Specialization</th>
                 <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3 pr-4 hidden md:table-cell">Active</th>
                 <th className="font-body text-xs text-text/50 uppercase tracking-wider pb-3">Actions</th>
               </tr>
@@ -173,8 +171,8 @@ const ManageTrainers = () => {
                 >
                   <td className="py-3 pr-4 p-4">
                     <div className="w-10 h-10 rounded-full overflow-hidden bg-primary/5">
-                      {trainer.image ? (
-                        <img src={trainer.image} alt="" className="w-full h-full object-cover" />
+                      {trainer.photo?.url ? (
+                        <img src={trainer.photo.url} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-text/20">
                           <FiUsers className="w-4 h-4" />
@@ -183,7 +181,7 @@ const ManageTrainers = () => {
                     </div>
                   </td>
                   <td className="py-3 pr-4 font-body text-sm text-text font-medium">{trainer.name}</td>
-                  <td className="py-3 pr-4 hidden md:table-cell font-body text-sm text-text/70">{trainer.role || 'N/A'}</td>
+                  <td className="py-3 pr-4 hidden md:table-cell font-body text-sm text-text/70">{trainer.specialization || 'N/A'}</td>
                   <td className="py-3 pr-4 hidden md:table-cell">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-medium font-body ${trainer.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
                       {trainer.isActive ? 'Active' : 'Inactive'}
@@ -243,13 +241,24 @@ const ManageTrainers = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-primary font-body font-medium text-sm mb-1.5">Role</label>
+                  <label className="block text-primary font-body font-medium text-sm mb-1.5">Specialization</label>
                   <input
                     type="text"
-                    value={form.role}
-                    onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
+                    value={form.specialization}
+                    onChange={(e) => setForm((p) => ({ ...p, specialization: e.target.value }))}
                     className="w-full px-4 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
-                    placeholder="e.g. Head Barista Trainer"
+                    placeholder="e.g. Espresso Science & Latte Art"
+                  />
+                </div>
+                <div>
+                  <label className="block text-primary font-body font-medium text-sm mb-1.5">Experience (years)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={form.experience}
+                    onChange={(e) => setForm((p) => ({ ...p, experience: e.target.value }))}
+                    className="w-full px-4 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
+                    placeholder="e.g. 10"
                   />
                 </div>
                 <div>
@@ -261,33 +270,14 @@ const ManageTrainers = () => {
                     placeholder="Short biography"
                   />
                 </div>
-                <div>
-                  <label className="block text-primary font-body font-medium text-sm mb-1.5">Expertise (comma separated)</label>
-                  <input
-                    type="text"
-                    value={form.expertise}
-                    onChange={(e) => setForm((p) => ({ ...p, expertise: e.target.value }))}
-                    className="w-full px-4 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
-                    placeholder="Espresso, Latte Art, Brewing"
-                  />
-                </div>
+
                 <div className="grid grid-cols-3 gap-3">
                   <div>
-                    <label className="block text-primary font-body font-medium text-sm mb-1.5">Instagram</label>
+                    <label className="block text-primary font-body font-medium text-sm mb-1.5">LinkedIn</label>
                     <input
                       type="text"
-                      value={form.socialLinks.instagram}
-                      onChange={(e) => setForm((p) => ({ ...p, socialLinks: { ...p.socialLinks, instagram: e.target.value } }))}
-                      className="w-full px-3 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
-                      placeholder="@handle"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-primary font-body font-medium text-sm mb-1.5">Facebook</label>
-                    <input
-                      type="text"
-                      value={form.socialLinks.facebook}
-                      onChange={(e) => setForm((p) => ({ ...p, socialLinks: { ...p.socialLinks, facebook: e.target.value } }))}
+                      value={form.socialLinks.linkedin}
+                      onChange={(e) => setForm((p) => ({ ...p, socialLinks: { ...p.socialLinks, linkedin: e.target.value } }))}
                       className="w-full px-3 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
                       placeholder="url"
                     />
@@ -298,6 +288,16 @@ const ManageTrainers = () => {
                       type="text"
                       value={form.socialLinks.twitter}
                       onChange={(e) => setForm((p) => ({ ...p, socialLinks: { ...p.socialLinks, twitter: e.target.value } }))}
+                      className="w-full px-3 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
+                      placeholder="@handle"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-primary font-body font-medium text-sm mb-1.5">Instagram</label>
+                    <input
+                      type="text"
+                      value={form.socialLinks.instagram}
+                      onChange={(e) => setForm((p) => ({ ...p, socialLinks: { ...p.socialLinks, instagram: e.target.value } }))}
                       className="w-full px-3 py-2.5 bg-white border-2 border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
                       placeholder="@handle"
                     />
@@ -332,15 +332,6 @@ const ManageTrainers = () => {
                     />
                     <span className="font-body text-sm text-text">Active</span>
                   </label>
-                  <div className="flex items-center gap-2">
-                    <label className="font-body text-sm text-text">Order:</label>
-                    <input
-                      type="number"
-                      value={form.displayOrder}
-                      onChange={(e) => setForm((p) => ({ ...p, displayOrder: parseInt(e.target.value) || 0 }))}
-                      className="w-16 px-2 py-1.5 bg-white border border-primary/10 rounded text-text font-body text-sm outline-none focus:border-accent"
-                    />
-                  </div>
                 </div>
                 <div className="flex gap-3 justify-end pt-2">
                   <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 rounded-lg font-body text-sm text-text/60 hover:bg-primary/5 transition-colors">

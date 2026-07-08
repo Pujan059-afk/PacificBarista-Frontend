@@ -10,7 +10,7 @@ import { IconStar } from '../ui/Icons';
 
 const testimonials = [
   {
-    name: 'Sarah Johnson',
+    name: 'Beeju Bk',
     course: 'Espresso Fundamentals',
     content: 'Pacific Barista completely transformed my understanding of coffee. The hands-on training and expert guidance helped me land my dream job at a specialty cafe within weeks of graduating.',
     rating: 5,
@@ -18,7 +18,7 @@ const testimonials = [
     initials: 'SJ',
   },
   {
-    name: 'Marcus Chen',
+    name: 'Prabin Shrestha',
     course: 'Latte Art Mastery',
     content: 'The attention to detail in the latte art course was incredible. I went from pouring basic shapes to creating intricate designs. The instructors are true artists.',
     rating: 5,
@@ -26,7 +26,7 @@ const testimonials = [
     initials: 'MC',
   },
   {
-    name: 'Emily Rodriguez',
+    name: 'Kaushal Thapa',
     course: 'Coffee Business',
     content: 'Thanks to the Coffee Business program, I successfully opened my own cafe. The curriculum covers everything from sourcing beans to financial management. Invaluable experience.',
     rating: 5,
@@ -34,7 +34,7 @@ const testimonials = [
     initials: 'ER',
   },
   {
-    name: 'James Park',
+    name: 'Ashim Bahadur Shrestha',
     course: 'Advanced Brewing',
     content: 'As someone who thought they knew coffee, the Advanced Brewing course opened my eyes to a whole new world. The science behind extraction and flavor profiling is fascinating.',
     rating: 5,

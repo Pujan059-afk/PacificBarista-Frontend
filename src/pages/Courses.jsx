@@ -1,37 +1,35 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import PageTransition from '../components/common/PageTransition';
-import SectionTitle from '../components/ui/SectionTitle';
 import CourseCard from '../components/courses/CourseCard';
 import CourseFilter from '../components/courses/CourseFilter';
 import Loader from '../components/common/Loader';
+import { fadeIn, staggerContainer } from '../animations';
 import api from '../services/api';
-import { staggerContainer, fadeIn } from '../animations';
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
   const [activeLevel, setActiveLevel] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const pages = Math.ceil(total / 9);
 
   useEffect(() => {
-    api.get('/courses')
-      .then((res) => setCourses(res.data.courses || []))
-      .catch(() => setCourses([]))
+    setLoading(true);
+    const params = { page, limit: 9 };
+    if (search) params.search = search;
+    if (activeLevel !== 'all') params.level = activeLevel;
+    api.get('/courses', { params })
+      .then((res) => {
+        setCourses(res.data.courses || []);
+        setTotal(res.data.total || 0);
+      })
+      .catch(() => { setCourses([]); setTotal(0); })
       .finally(() => setLoading(false));
-  }, []);
-
-  const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
-      const matchesLevel = activeLevel === 'all' || course.level?.toLowerCase() === activeLevel;
-      const matchesSearch = course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        course.shortDescription?.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesLevel && matchesSearch;
-    });
-  }, [activeLevel, searchQuery, courses]);
-
-  if (loading) return <Loader />;
+  }, [page, search, activeLevel]);
 
   return (
     <PageTransition>
@@ -56,7 +54,7 @@ const Courses = () => {
               Start Your Journey
             </span>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-4">
-              Barista Course Detail
+              Our Courses
             </h1>
             <p className="font-body text-cream/60 text-lg max-w-2xl mx-auto">
               Roast Your Barista Skill — from foundation to mastery.
@@ -75,41 +73,53 @@ const Courses = () => {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-16 bg-cream">
         <div className="container-custom">
           <CourseFilter
             activeLevel={activeLevel}
-            onFilterChange={setActiveLevel}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
+            onFilterChange={(l) => { setActiveLevel(l); setPage(1); }}
+            searchQuery={search}
+            onSearchChange={(s) => { setSearch(s); setPage(1); }}
           />
 
-          {filteredCourses.length > 0 ? (
-            <motion.div
-              variants={staggerContainer(0.1)}
-              initial="hidden"
-              animate="show"
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {filteredCourses.map((course, index) => (
-                <CourseCard key={course.slug} course={course} index={index} />
-              ))}
+          {loading ? (
+            <Loader />
+          ) : courses.length === 0 ? (
+            <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="text-center py-16">
+              <p className="font-body text-text/60 text-lg">No courses found matching your criteria.</p>
             </motion.div>
           ) : (
-            <motion.div
-              variants={fadeIn('up')}
-              initial="hidden"
-              animate="show"
-              className="text-center py-20"
-            >
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-accent/10 flex items-center justify-center">
-                <svg className="w-10 h-10 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="font-heading text-2xl font-bold text-primary mb-2">No courses found</h3>
-              <p className="font-body text-text/60">Try adjusting your filters or search term.</p>
-            </motion.div>
+            <>
+              <motion.div
+                key={activeLevel + search + page}
+                variants={staggerContainer(0.1)}
+                initial="hidden"
+                animate="show"
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                {courses.map((course, i) => (
+                  <CourseCard key={course._id} course={course} index={i} />
+                ))}
+              </motion.div>
+
+              {pages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-12">
+                  {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setPage(p)}
+                      className={`w-10 h-10 rounded-lg font-body font-medium text-sm transition-all duration-300 ${
+                        page === p
+                          ? 'bg-accent text-white shadow-md'
+                          : 'bg-white border border-primary/10 text-text/60 hover:text-accent'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

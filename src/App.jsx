@@ -8,7 +8,6 @@ import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import Certifications from './pages/Certifications';
 import Trainers from './pages/Trainers';
-import Workshops from './pages/Workshops';
 import Gallery from './pages/Gallery';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
@@ -16,6 +15,7 @@ import Testimonials from './pages/Testimonials';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Enroll from './pages/Enroll';
+import VerifyCertificate from './pages/VerifyCertificate';
 import NotFound from './pages/NotFound';
 
 import AdminLogin from './pages/admin/AdminLogin';
@@ -28,8 +28,8 @@ import AddEditBlog from './pages/admin/AddEditBlog';
 import ManageTrainers from './pages/admin/ManageTrainers';
 import ManageTestimonials from './pages/admin/ManageTestimonials';
 import ManageGallery from './pages/admin/ManageGallery';
-import ManageWorkshops from './pages/admin/ManageWorkshops';
 import ManageEnrollments from './pages/admin/ManageEnrollments';
+import ManageCertificates from './pages/admin/ManageCertificates';
 import ManageContacts from './pages/admin/ManageContacts';
 import NewsletterSubscribers from './pages/admin/NewsletterSubscribers';
 
@@ -46,7 +46,6 @@ const App = () => {
               <Route path="courses/:slug" element={<CourseDetail />} />
               <Route path="certifications" element={<Certifications />} />
               <Route path="trainers" element={<Trainers />} />
-              <Route path="workshops" element={<Workshops />} />
               <Route path="gallery" element={<Gallery />} />
               <Route path="blog" element={<Blog />} />
               <Route path="blog/:slug" element={<BlogPost />} />
@@ -54,6 +53,7 @@ const App = () => {
               <Route path="contact" element={<Contact />} />
               <Route path="faq" element={<FAQ />} />
               <Route path="enroll" element={<Enroll />} />
+              <Route path="verify" element={<VerifyCertificate />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
@@ -70,8 +70,8 @@ const App = () => {
               <Route path="trainers" element={<ManageTrainers />} />
               <Route path="testimonials" element={<ManageTestimonials />} />
               <Route path="gallery" element={<ManageGallery />} />
-              <Route path="workshops" element={<ManageWorkshops />} />
               <Route path="enrollments" element={<ManageEnrollments />} />
+              <Route path="certificates" element={<ManageCertificates />} />
               <Route path="contacts" element={<ManageContacts />} />
               <Route path="newsletter" element={<NewsletterSubscribers />} />
             </Route>

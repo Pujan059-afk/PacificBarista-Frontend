@@ -4,8 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../../contexts/AuthContext';
 import {
-  FiHome, FiBook, FiUsers, FiImage, FiCalendar, FiMessageSquare,
-  FiMail, FiStar, FiLogOut, FiMenu, FiX, FiAward, FiDollarSign
+  FiHome, FiBook, FiUsers, FiImage, FiMessageSquare,
+  FiMail, FiStar, FiLogOut, FiMenu, FiX, FiAward, FiShield
 } from 'react-icons/fi';
 
 const sidebarLinks = [
@@ -15,8 +15,8 @@ const sidebarLinks = [
   { path: '/admin/trainers', label: 'Trainers', icon: FiUsers },
   { path: '/admin/testimonials', label: 'Testimonials', icon: FiStar },
   { path: '/admin/gallery', label: 'Gallery', icon: FiImage },
-  { path: '/admin/workshops', label: 'Workshops', icon: FiCalendar },
-  { path: '/admin/enrollments', label: 'Enrollments', icon: FiDollarSign },
+  { path: '/admin/enrollments', label: 'Enrollments', icon: FiUsers },
+  { path: '/admin/certificates', label: 'Certificates', icon: FiShield },
   { path: '/admin/contacts', label: 'Contacts', icon: FiMail },
   { path: '/admin/newsletter', label: 'Newsletter', icon: FiAward },
 ];
