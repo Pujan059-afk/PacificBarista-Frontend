@@ -125,7 +125,7 @@ const Blog = () => {
                 variants={staggerContainer(0.1)}
                 initial="hidden"
                 animate="show"
-                className="grid md:grid-cols-2 gap-8"
+                className="grid md:grid-cols-2 gap-4"
               >
                 {posts.map((post, i) => (
                   <motion.div
@@ -135,20 +135,20 @@ const Blog = () => {
                   >
                     <Link to={`/blog/${post.slug}`}>
                       {post.image?.url ? (
-                        <div className="h-52 overflow-hidden relative">
-                          <img src={post.image.url} alt={post.title} className="w-full h-full object-contain bg-primary/5 group-hover:scale-105 transition-transform duration-500" />
+                        <div className="h-40 overflow-hidden relative">
+                          <img src={post.image.url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                         </div>
                       ) : (
-                        <div className={`h-52 bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center relative`}>
-                          <span className="text-2xl font-heading font-bold text-white/30 uppercase tracking-widest">{post.category}</span>
+                        <div className={`h-40 bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center relative`}>
+                          <span className="text-lg font-heading font-bold text-white/30 uppercase tracking-widest">{post.category}</span>
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                         </div>
                       )}
                     </Link>
-                    <div className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <Badge variant="accent">{post.category}</Badge>
+                    <div className="px-4 pt-3 pb-3">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <Badge variant="accent" className="text-xs">{post.category}</Badge>
                         <span className="flex items-center gap-1 text-xs text-text/50 font-body">
                           <FiCalendar className="w-3 h-3" />
                           {post.publishedAt
@@ -157,12 +157,12 @@ const Blog = () => {
                         </span>
                       </div>
                       <Link to={`/blog/${post.slug}`}>
-                        <h3 className="font-heading text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+                        <h3 className="font-heading text-base font-bold text-primary mb-1 group-hover:text-accent transition-colors duration-300">
                           {post.title}
                         </h3>
                       </Link>
-                      <p className="font-body text-text/70 text-sm leading-relaxed mb-4">{post.excerpt}</p>
-                      <div className="flex items-center justify-between pt-3 border-t border-primary/5">
+                      <p className="font-body text-text/70 text-sm leading-relaxed mb-2">{post.excerpt}</p>
+                      <div className="flex items-center justify-between pt-2 border-t border-primary/5">
                         <span className="flex items-center gap-1 text-xs text-text/50 font-body">
                           <FiUser className="w-3 h-3" />
                           {post.author}

@@ -11,12 +11,6 @@ const socialIcons = {
   FaTiktok: FaTiktok,
 };
 
-const courseLinks = [
-  { label: 'Foundation Barista Course', path: '/courses/foundation-barista-course' },
-  { label: 'Full Barista Course', path: '/courses/full-barista-course' },
-  { label: 'Advanced Barista Course', path: '/courses/advanced-barista-course' },
-];
-
 const Footer = () => {
   return (
     <footer className="bg-primary text-white">
@@ -60,22 +54,6 @@ const Footer = () => {
                     className="text-white/60 hover:text-accent transition-colors duration-200 font-body text-sm"
                   >
                     {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="font-heading text-lg font-semibold mb-5">Courses</h3>
-            <ul className="flex flex-col gap-3">
-              {courseLinks.map((course) => (
-                <li key={course.path}>
-                  <Link
-                    to={course.path}
-                    className="text-white/60 hover:text-accent transition-colors duration-200 font-body text-sm"
-                  >
-                    {course.label}
                   </Link>
                 </li>
               ))}

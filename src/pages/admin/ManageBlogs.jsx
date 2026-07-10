@@ -61,7 +61,7 @@ const ManageBlogs = () => {
           <h1 className="font-heading text-2xl font-bold text-primary">Blogs</h1>
           <p className="font-body text-text/60 text-sm mt-1">Manage blog posts</p>
         </div>
-        <Link to="/admin/blogs/new">
+        <Link to="/admin-pacific/blogs/new">
           <Button icon={FiPlus} size="sm">Add New Blog</Button>
         </Link>
       </div>
@@ -133,7 +133,7 @@ const ManageBlogs = () => {
                     <td className="py-3">
                       <div className="flex items-center gap-2">
                         <Link
-                          to={`/admin/blogs/edit/${blog._id}`}
+                          to={`/admin-pacific/blogs/edit/${blog._id}`}
                           className="p-2 rounded-lg hover:bg-accent/10 text-text/40 hover:text-accent transition-colors"
                           title="Edit"
                         >

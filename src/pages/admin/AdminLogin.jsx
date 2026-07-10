@@ -47,7 +47,7 @@ const AdminLogin = () => {
         setError('You do not have admin access');
         return;
       }
-      navigate('/admin/dashboard', { replace: true });
+      navigate('/admin-pacific/dashboard', { replace: true });
     } catch (err) {
       setError(err.message || 'Invalid OTP');
     } finally {
@@ -64,7 +64,7 @@ const AdminLogin = () => {
   }
 
   if (isAuthenticated && admin) {
-    return <Navigate to="/admin/dashboard" replace />;
+    return <Navigate to="/admin-pacific/dashboard" replace />;
   }
 
   return (

@@ -15,7 +15,7 @@ const certifications = [
     duration: '2 Weeks',
     description: 'Master the essentials of espresso extraction, milk steaming, and basic latte art. Perfect for aspiring baristas with no prior experience.',
     highlights: ['Espresso fundamentals', 'Milk texturing basics', 'Simple latte art', 'Machine maintenance'],
-    price: '$299',
+    price: 'Rs. 29,999',
   },
   {
     title: 'Professional Barista Diploma',
@@ -23,7 +23,7 @@ const certifications = [
     duration: '6 Weeks',
     description: 'Advanced techniques in specialty coffee preparation, flavor profiling, and workflow optimization for high-volume service.',
     highlights: ['Advanced extraction', 'Pour-over mastery', 'Flavor profiling', 'Service workflows'],
-    price: '$799',
+    price: 'Rs. 79,999',
   },
   {
     title: 'Master Barista Certification',
@@ -31,7 +31,7 @@ const certifications = [
     duration: '12 Weeks',
     description: 'Elite-level training covering competition-grade latte art, coffee chemistry, roastery operations, and trainer methodologies.',
     highlights: ['Competition art', 'Coffee chemistry', 'Roasting principles', 'Trainer certification'],
-    price: '$1,499',
+    price: 'Rs. 1,49,999',
   },
   {
     title: 'Specialty Coffee Q-Grader Prep',
@@ -39,7 +39,7 @@ const certifications = [
     duration: '4 Weeks',
     description: 'Intensive preparation for the Q-Grader certification exam, focusing on sensory skills and cupping protocols.',
     highlights: ['Sensory training', 'Cupping protocols', 'Green grading', 'Defect identification'],
-    price: '$899',
+    price: 'Rs. 89,999',
   },
 ];
 

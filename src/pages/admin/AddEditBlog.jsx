@@ -75,7 +75,7 @@ const AddEditBlog = () => {
           if (blog.image?.url) setImagePreview(blog.image.url);
         } catch (err) {
           showToast('Failed to load blog', 'error');
-          navigate('/admin/blogs');
+          navigate('/admin-pacific/blogs');
         } finally {
           setFetching(false);
         }
@@ -154,7 +154,7 @@ const AddEditBlog = () => {
         await api.post('/blogs', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
         showToast('Blog created successfully', 'success');
       }
-      navigate('/admin/blogs');
+      navigate('/admin-pacific/blogs');
     } catch (err) {
       showToast(err.message || 'Failed to save blog', 'error');
     } finally {
@@ -185,7 +185,7 @@ const AddEditBlog = () => {
 
       <div className="flex items-center gap-4 mb-6">
         <button
-          onClick={() => navigate('/admin/blogs')}
+          onClick={() => navigate('/admin-pacific/blogs')}
           className="p-2 rounded-lg hover:bg-primary/5 text-primary transition-colors"
         >
           <FiChevronLeft className="w-5 h-5" />
@@ -322,7 +322,7 @@ const AddEditBlog = () => {
         <div className="flex items-center gap-3 justify-end pb-8">
           <button
             type="button"
-            onClick={() => navigate('/admin/blogs')}
+            onClick={() => navigate('/admin-pacific/blogs')}
             className="px-6 py-3 rounded-lg font-body text-sm text-text/60 hover:bg-primary/5 transition-colors"
           >
             Cancel

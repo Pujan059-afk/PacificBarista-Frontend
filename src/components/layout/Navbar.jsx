@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX } from 'react-icons/hi';
-import { FiChevronDown } from 'react-icons/fi';
 import useScrollPosition from '../../hooks/useScrollPosition';
 import { NAV_LINKS } from '../../utils/constants';
 import Button from '../ui/Button';
@@ -22,15 +21,8 @@ const mobileItemVariants = {
   }),
 };
 
-const megaMenuCourses = [
-  { label: 'Foundation Barista Course', path: '/courses/foundation-barista-course' },
-  { label: 'Full Barista Course', path: '/courses/full-barista-course' },
-  { label: 'Advanced Barista Course', path: '/courses/advanced-barista-course' },
-];
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
   const scrollY = useScrollPosition();
   const { pathname } = useLocation();
 
@@ -61,51 +53,27 @@ const Navbar = () => {
 
           <div className="hidden lg:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
-              <div
+              <Link
                 key={link.path}
-                className="relative"
-                onMouseEnter={() => link.label === 'Courses' && setShowMegaMenu(true)}
-                onMouseLeave={() => link.label === 'Courses' && setShowMegaMenu(false)}
+                to={link.path}
+                className={`relative px-4 py-2 text-sm font-medium font-body rounded-lg transition-colors duration-200 ${
+                  pathname === link.path
+                    ? isScrolled || !isHomePage
+                      ? 'text-accent'
+                      : 'text-white'
+                    : isScrolled || !isHomePage
+                      ? 'text-text hover:text-accent'
+                      : 'text-white/80 hover:text-white'
+                }`}
               >
-                <Link
-                  to={link.path}
-                  className={`relative px-4 py-2 text-sm font-medium font-body rounded-lg transition-colors duration-200 flex items-center gap-1 ${
-                    pathname === link.path
-                      ? isScrolled || !isHomePage
-                        ? 'text-accent'
-                        : 'text-white'
-                      : isScrolled || !isHomePage
-                        ? 'text-text hover:text-accent'
-                        : 'text-white/80 hover:text-white'
-                  }`}
-                >
-                  {link.label}
-                  {link.label === 'Courses' && <FiChevronDown className="w-3 h-3" />}
-                </Link>
+                {link.label}
                 {pathname === link.path && (
                   <motion.div
                     layoutId="activeNav"
                     className="absolute -bottom-1 left-4 right-4 h-0.5 bg-accent rounded-full"
                   />
                 )}
-                {link.label === 'Courses' && showMegaMenu && (
-                  <div
-                    className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-primary/5 py-2"
-                    onMouseEnter={() => setShowMegaMenu(true)}
-                    onMouseLeave={() => setShowMegaMenu(false)}
-                  >
-                    {megaMenuCourses.map((course) => (
-                      <Link
-                        key={course.path}
-                        to={course.path}
-                        className="block px-4 py-2.5 text-sm text-text hover:text-accent hover:bg-accent/5 transition-colors font-body"
-                      >
-                        {course.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              </Link>
             ))}
           </div>
 

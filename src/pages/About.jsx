@@ -4,6 +4,11 @@ import { motion } from 'framer-motion';
 import PageTransition from '../components/common/PageTransition';
 import Button from '../components/ui/Button';
 import { fadeIn, staggerContainer } from '../animations';
+import teacherTeaching from '../assets/images/TeacherTeaching.jpg';
+import teacherGuiding from '../assets/images/TeacherGuiding.jpg';
+import coffeeArt from '../assets/images/coffeeArt.jpg';
+import pacificStudentTraining from '../assets/images/PacificStudentTraining.jpg';
+
 
 const milestones = [
   { year: '2015', title: 'Founded in Portland', description: 'Pacific Barista Academy opened its doors with a single espresso machine and a dream.' },
@@ -120,14 +125,8 @@ const About = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-2xl">
-                <span className="text-cream/20 font-heading text-8xl font-bold">PB</span>
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-48 h-48 rounded-2xl bg-accent/10 border border-accent/20 flex items-center justify-center backdrop-blur-sm">
-                <div className="text-center">
-                  <span className="block font-heading text-4xl font-bold text-accent">1000+</span>
-                  <span className="font-body text-xs text-text/60">Graduates</span>
-                </div>
+              <div className="w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <img src={teacherTeaching} alt="Teacher teaching students" className="w-full h-full object-cover" />
               </div>
             </motion.div>
           </div>
@@ -218,8 +217,8 @@ const About = () => {
               viewport={{ once: true }}
               className="order-2 lg:order-1"
             >
-              <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-secondary to-primary flex items-center justify-center shadow-2xl">
-                <span className="text-cream/20 font-heading text-8xl font-bold">PB</span>
+              <div className="w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <img src={teacherGuiding} alt="Teacher guiding student" className="w-full h-full object-cover" />
               </div>
             </motion.div>
             <motion.div
@@ -284,15 +283,15 @@ const About = () => {
               whileInView="show"
               viewport={{ once: true }}
             >
-              <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-accent to-primary flex items-center justify-center shadow-2xl">
-                <span className="text-white/20 font-heading text-8xl font-bold">PB</span>
+              <div className="w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <img src={coffeeArt} alt="Coffee art" className="w-full h-full object-cover" />
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-28 bg-cream">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -302,8 +301,8 @@ const About = () => {
               viewport={{ once: true }}
               className="order-2 lg:order-1"
             >
-              <div className="w-full h-96 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-2xl">
-                <span className="text-cream/20 font-heading text-8xl font-bold">PB</span>
+              <div className="w-full h-96 rounded-2xl overflow-hidden shadow-2xl">
+                <img src={pacificStudentTraining} alt="Students training" className="w-full h-full object-cover" />
               </div>
             </motion.div>
             <motion.div
