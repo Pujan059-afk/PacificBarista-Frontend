@@ -160,7 +160,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-heading text-base font-bold text-primary">Recent Enrollments</h2>
             <Link
-              to="/admin/enrollments"
+              to="/admin-pacific/enrollments"
               className="flex items-center gap-1 text-xs font-body text-accent hover:text-accent/70 transition-colors font-medium"
             >
               View All <FiEye className="w-3.5 h-3.5" />
@@ -195,10 +195,10 @@ const Dashboard = () => {
                         <div className="flex items-center gap-2.5">
                           <div className="w-7 h-7 rounded-full bg-primary/5 flex items-center justify-center">
                             <span className="font-body text-xs font-medium text-text/60">
-                              {(enr.name || enr.studentName || '?').charAt(0)}
+                              {enr.fullName.charAt(0)}
                             </span>
                           </div>
-                          <span className="font-body text-sm text-text font-medium">{enr.name || enr.studentName || 'N/A'}</span>
+                          <span className="font-body text-sm text-text font-medium">{enr.fullName || 'N/A'}</span>
                         </div>
                       </td>
                       <td className="py-3.5 pr-4 font-body text-sm text-text/60">{enr.courseName || enr.course?.title || 'N/A'}</td>
@@ -220,12 +220,12 @@ const Dashboard = () => {
           <div className="bg-white rounded-xl shadow-sm border border-primary/5 p-6">
             <h2 className="font-heading text-base font-bold text-primary mb-4">Quick Actions</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <QuickActionBtn to="/admin/courses/new" icon={FiPlus} label="Add Course" desc="Create a new course" gradient="from-blue-500 to-blue-600" />
-              <QuickActionBtn to="/admin/blogs/new" icon={FiPlus} label="Add Blog" desc="Write a new post" gradient="from-purple-500 to-purple-600" />
-              <QuickActionBtn to="/admin/enrollments" icon={FiEye} label="Enrollments" desc="Manage enrollments" gradient="from-emerald-500 to-emerald-600" />
-              <QuickActionBtn to="/admin/testimonials" icon={FiStar} label="Testimonials" desc="Manage reviews" gradient="from-amber-500 to-amber-600" />
-              <QuickActionBtn to="/admin/gallery" icon={FiPlus} label="Gallery" desc="Upload images" gradient="from-orange-500 to-orange-600" />
-              <QuickActionBtn to="/admin/certificates" icon={FiShield} label="Certificates" desc="Issue certificates" gradient="from-indigo-500 to-indigo-600" />
+              <QuickActionBtn to="/admin-pacific/courses/new" icon={FiPlus} label="Add Course" desc="Create a new course" gradient="from-blue-500 to-blue-600" />
+              <QuickActionBtn to="/admin-pacific/blogs/new" icon={FiPlus} label="Add Blog" desc="Write a new post" gradient="from-purple-500 to-purple-600" />
+              <QuickActionBtn to="/admin-pacific/enrollments" icon={FiEye} label="Enrollments" desc="Manage enrollments" gradient="from-emerald-500 to-emerald-600" />
+              <QuickActionBtn to="/admin-pacific/testimonials" icon={FiStar} label="Testimonials" desc="Manage reviews" gradient="from-amber-500 to-amber-600" />
+              <QuickActionBtn to="/admin-pacific/gallery" icon={FiPlus} label="Gallery" desc="Upload images" gradient="from-orange-500 to-orange-600" />
+              <QuickActionBtn to="/admin-pacific/certificates" icon={FiShield} label="Certificates" desc="Issue certificates" gradient="from-indigo-500 to-indigo-600" />
             </div>
           </div>
 

@@ -1,94 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { FiStar, FiPlay } from 'react-icons/fi';
+import { FiStar } from 'react-icons/fi';
 import Badge from '../components/ui/Badge';
 import PageTransition from '../components/common/PageTransition';
 import { fadeIn, staggerContainer } from '../animations/index';
+import api from '../services/api';
 
-const courses = ['All', 'Foundation', 'Professional', 'Master', 'Workshop'];
-
-const testimonials = [
-  {
-    id: 1,
-    name: 'Sophie Anderson',
-    course: 'Professional',
-    rating: 5,
-    content: 'Pacific Barista Academy completely transformed my career. The hands-on training and expert mentorship gave me the confidence to open my own specialty café. The curriculum is world-class.',
-    gradient: 'from-amber-500 to-orange-400',
-    featured: true,
-    video: false,
-  },
-  {
-    id: 2,
-    name: 'Michael Torres',
-    course: 'Foundation',
-    rating: 5,
-    content: 'I started with zero knowledge about coffee. The foundation course was incredibly well-structured. Within weeks I was pulling consistent shots and pouring basic latte art.',
-    gradient: 'from-rose-500 to-pink-400',
-    featured: false,
-    video: false,
-  },
-  {
-    id: 3,
-    name: 'Priya Sharma',
-    course: 'Master',
-    rating: 5,
-    content: 'The Master Barista program pushed me to new heights. The competition coaching and sensory training were invaluable. I placed 3rd in the national championships!',
-    gradient: 'from-violet-500 to-purple-400',
-    featured: false,
-    video: true,
-  },
-  {
-    id: 4,
-    name: 'James Mitchell',
-    course: 'Workshop',
-    rating: 4,
-    content: 'Attended the Latte Art Masterclass and it was amazing. James is a fantastic instructor who breaks down complex patterns into manageable steps.',
-    gradient: 'from-emerald-500 to-teal-400',
-    featured: false,
-    video: false,
-  },
-  {
-    id: 5,
-    name: 'Emma Richardson',
-    course: 'Professional',
-    rating: 5,
-    content: 'The facilities are top-notch and the trainers genuinely care about your progress. The Professional Diploma gave me the skills to become head barista at a renowned coffee house.',
-    gradient: 'from-blue-500 to-cyan-400',
-    featured: false,
-    video: true,
-  },
-  {
-    id: 6,
-    name: 'Daniel Kim',
-    course: 'Foundation',
-    rating: 5,
-    content: 'Great atmosphere and excellent teaching methodology. The small class sizes meant plenty of one-on-one time with instructors. Highly recommend!',
-    gradient: 'from-indigo-500 to-blue-400',
-    featured: false,
-    video: false,
-  },
-  {
-    id: 7,
-    name: 'Aisha Patel',
-    course: 'Master',
-    rating: 5,
-    content: 'The Q-Grader preparation course was intense but incredibly rewarding. I passed my certification on the first try thanks to the thorough training.',
-    gradient: 'from-amber-600 to-yellow-400',
-    featured: false,
-    video: false,
-  },
-  {
-    id: 8,
-    name: 'Carlos Mendoza',
-    course: 'Workshop',
-    rating: 5,
-    content: 'The Espresso Science Workshop changed how I approach brewing. Understanding the physics behind extraction made me a better barista overnight.',
-    gradient: 'from-green-500 to-emerald-400',
-    featured: false,
-    video: true,
-  },
+const gradients = [
+  'from-amber-500 to-orange-400',
+  'from-rose-500 to-pink-400',
+  'from-violet-500 to-purple-400',
+  'from-emerald-500 to-teal-400',
+  'from-blue-500 to-cyan-400',
+  'from-indigo-500 to-blue-400',
+  'from-amber-600 to-yellow-400',
+  'from-green-500 to-emerald-400',
 ];
 
 const StarRating = ({ rating }) => (
@@ -109,38 +36,54 @@ const TestimonialCard = ({ t, featured }) => (
       featured ? 'md:col-span-2 md:flex' : ''
     }`}
   >
-    {t.video && (
-      <div className={`${featured ? 'md:w-1/2' : ''} relative bg-gradient-to-br ${t.gradient} h-48 flex items-center justify-center cursor-pointer group`}>
-        <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-          <FiPlay className="w-7 h-7 text-white ml-0.5" />
-        </div>
-      </div>
-    )}
-    <div className={`p-6 ${featured && t.video ? 'md:w-1/2' : ''}`}>
+    <div className={`p-6 ${featured ? 'md:w-full' : ''}`}>
       <div className="flex items-center gap-4 mb-4">
         <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${t.gradient} flex items-center justify-center flex-shrink-0`}>
-          <span className="text-lg font-heading font-bold text-white">{t.name.split(' ').map(n => n[0]).join('')}</span>
+          <span className="text-lg font-heading font-bold text-white">{t.studentName.split(' ').map(n => n[0]).join('')}</span>
         </div>
         <div>
-          <h3 className="font-heading font-bold text-primary">{t.name}</h3>
+          <h3 className="font-heading font-bold text-primary">{t.studentName}</h3>
           <Badge variant="accent">{t.course}</Badge>
         </div>
       </div>
       <StarRating rating={t.rating} />
-      <p className="font-body text-text/70 text-sm leading-relaxed mt-3 italic">"{t.content}"</p>
+      <p className="font-body text-text/70 text-sm leading-relaxed mt-3 italic">&ldquo;{t.content}&rdquo;</p>
     </div>
   </motion.div>
 );
 
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState([]);
   const [filter, setFilter] = useState('All');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await api.get('/testimonials');
+        const data = res.data?.testimonials || res.data || [];
+        const mapped = data.map((t, i) => ({
+          ...t,
+          gradient: gradients[i % gradients.length],
+        }));
+        setTestimonials(mapped);
+      } catch (err) {
+        console.error('Failed to load testimonials', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const courses = ['All', ...new Set(testimonials.map((t) => t.course))];
 
   const filtered = filter === 'All'
     ? testimonials
     : testimonials.filter((t) => t.course === filter);
 
-  const featured = filtered.find((t) => t.featured);
-  const rest = filtered.filter((t) => !t.featured);
+  const featured = filtered.find((t) => t.isFeatured);
+  const rest = filtered.filter((t) => !t.isFeatured);
 
   return (
     <PageTransition>
@@ -169,44 +112,54 @@ const Testimonials = () => {
 
       <section className="py-20 bg-cream">
         <div className="container-custom">
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            {courses.map((c) => (
-              <button
-                key={c}
-                onClick={() => setFilter(c)}
-                className={`px-6 py-2.5 rounded-full font-body text-sm font-medium transition-all duration-300 ${
-                  filter === c
-                    ? 'bg-accent text-white shadow-lg'
-                    : 'bg-white text-text/60 hover:text-accent border border-primary/10'
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-
-          <motion.div
-            key={filter}
-            variants={staggerContainer(0.1)}
-            initial="hidden"
-            animate="show"
-            className="space-y-6"
-          >
-            {featured && <TestimonialCard t={featured} featured />}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {rest.map((t) => (
-                <TestimonialCard key={t.id} t={t} />
-              ))}
+          {loading ? (
+            <div className="flex justify-center py-12">
+              <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
             </div>
-          </motion.div>
+          ) : (
+            <>
+              {courses.length > 1 && (
+                <div className="flex flex-wrap justify-center gap-3 mb-12">
+                  {courses.map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setFilter(c)}
+                      className={`px-6 py-2.5 rounded-full font-body text-sm font-medium transition-all duration-300 ${
+                        filter === c
+                          ? 'bg-accent text-white shadow-lg'
+                          : 'bg-white text-text/60 hover:text-accent border border-primary/10'
+                      }`}
+                    >
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              )}
 
-          {filtered.length === 0 && (
-            <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="text-center py-16">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FiStar className="w-8 h-8 text-accent" />
-              </div>
-              <p className="font-body text-text/60 text-lg">No testimonials found for this course.</p>
-            </motion.div>
+              <motion.div
+                key={filter}
+                variants={staggerContainer(0.1)}
+                initial="hidden"
+                animate="show"
+                className="space-y-6"
+              >
+                {featured && <TestimonialCard t={featured} featured />}
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {rest.map((t) => (
+                    <TestimonialCard key={t._id} t={t} />
+                  ))}
+                </div>
+              </motion.div>
+
+              {filtered.length === 0 && (
+                <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="text-center py-16">
+                  <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FiStar className="w-8 h-8 text-accent" />
+                  </div>
+                  <p className="font-body text-text/60 text-lg">No testimonials found for this course.</p>
+                </motion.div>
+              )}
+            </>
           )}
         </div>
       </section>

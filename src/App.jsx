@@ -33,7 +33,7 @@ import ManageGallery from './pages/admin/ManageGallery';
 import ManageEnrollments from './pages/admin/ManageEnrollments';
 import ManageCertificates from './pages/admin/ManageCertificates';
 import ManageContacts from './pages/admin/ManageContacts';
-import NewsletterSubscribers from './pages/admin/NewsletterSubscribers';
+
 
 const App = () => {
   return (
@@ -60,9 +60,8 @@ const App = () => {
               <Route path="terms" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
             </Route>
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin-pacific" element={<AdminLogin />} />
+            <Route path="/admin-pacific/*" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="courses" element={<ManageCourses />} />
@@ -77,7 +76,7 @@ const App = () => {
               <Route path="enrollments" element={<ManageEnrollments />} />
               <Route path="certificates" element={<ManageCertificates />} />
               <Route path="contacts" element={<ManageContacts />} />
-              <Route path="newsletter" element={<NewsletterSubscribers />} />
+
             </Route>
           </Routes>
         </AppProvider>

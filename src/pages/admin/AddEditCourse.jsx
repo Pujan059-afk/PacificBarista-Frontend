@@ -66,7 +66,7 @@ const AddEditCourse = () => {
           if (course.image?.url) setImagePreview(course.image.url);
         } catch (err) {
           showToast('Failed to load course', 'error');
-          navigate('/admin/courses');
+          navigate('/admin-pacific/courses');
         } finally {
           setFetching(false);
         }
@@ -207,7 +207,7 @@ const AddEditCourse = () => {
         await api.post('/courses', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
         showToast('Course created successfully', 'success');
       }
-      navigate('/admin/courses');
+      navigate('/admin-pacific/courses');
     } catch (err) {
       showToast(err.message || 'Failed to save course', 'error');
     } finally {
@@ -238,7 +238,7 @@ const AddEditCourse = () => {
 
       <div className="flex items-center gap-4 mb-6">
         <button
-          onClick={() => navigate('/admin/courses')}
+          onClick={() => navigate('/admin-pacific/courses')}
           className="p-2 rounded-lg hover:bg-primary/5 text-primary transition-colors"
         >
           <FiChevronLeft className="w-5 h-5" />
@@ -517,7 +517,7 @@ const AddEditCourse = () => {
         <div className="flex items-center gap-3 justify-end pb-8">
           <button
             type="button"
-            onClick={() => navigate('/admin/courses')}
+            onClick={() => navigate('/admin-pacific/courses')}
             className="px-6 py-3 rounded-lg font-body text-sm text-text/60 hover:bg-primary/5 transition-colors"
           >
             Cancel

@@ -67,7 +67,7 @@ const ManageCourses = () => {
           <h1 className="font-heading text-2xl font-bold text-primary">Courses</h1>
           <p className="font-body text-text/60 text-sm mt-1">Manage your training courses</p>
         </div>
-        <Link to="/admin/courses/new">
+        <Link to="/admin-pacific/courses/new">
           <Button icon={FiPlus} size="sm">
             Add New Course
           </Button>
@@ -150,7 +150,7 @@ const ManageCourses = () => {
                     <td className="py-3">
                       <div className="flex items-center gap-2">
                         <Link
-                          to={`/admin/courses/edit/${course._id}`}
+                          to={`/admin-pacific/courses/edit/${course._id}`}
                           className="p-2 rounded-lg hover:bg-accent/10 text-text/40 hover:text-accent transition-colors"
                           title="Edit"
                         >

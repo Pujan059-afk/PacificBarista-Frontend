@@ -22,8 +22,8 @@ const ManageContacts = () => {
 
   const fetchContacts = async () => {
     try {
-      const res = await api.get('/contacts');
-      setContacts(res.data?.contacts || res.data || []);
+      const res = await api.get('/contact');
+      setContacts(res.data?.messages || res.data?.contacts || res.data || []);
     } catch (err) {
       showToast('Failed to load contacts', 'error');
     } finally {
@@ -33,7 +33,7 @@ const ManageContacts = () => {
 
   const handleMarkRead = async (id) => {
     try {
-      await api.put(`/contacts/${id}`, { read: true });
+      await api.put(`/contact/${id}/read`);
       setContacts((prev) => prev.map((c) => (c._id === id ? { ...c, read: true } : c)));
       if (viewItem?._id === id) setViewItem((prev) => prev ? { ...prev, read: true } : prev);
     } catch (err) {
@@ -45,7 +45,7 @@ const ManageContacts = () => {
     if (!deleteId) return;
     setDeleting(true);
     try {
-      await api.delete(`/contacts/${deleteId}`);
+      await api.delete(`/contact/${deleteId}`);
       setContacts((prev) => prev.filter((c) => c._id !== deleteId));
       showToast('Message deleted', 'success');
     } catch (err) {
