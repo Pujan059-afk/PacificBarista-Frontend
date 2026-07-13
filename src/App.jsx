@@ -41,6 +41,23 @@ const App = () => {
       <AuthProvider>
         <AppProvider>
           <Routes>
+            <Route path="/admin-pacific" element={<div style={{background:'red',color:'white',padding:'2rem',fontSize:'2rem'}}>DEBUG: Admin route matched!</div>} />
+            <Route path="/admin-pacific/*" element={<AdminLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="courses" element={<ManageCourses />} />
+              <Route path="courses/new" element={<AddEditCourse />} />
+              <Route path="courses/edit/:id" element={<AddEditCourse />} />
+              <Route path="blogs" element={<ManageBlogs />} />
+              <Route path="blogs/new" element={<AddEditBlog />} />
+              <Route path="blogs/edit/:id" element={<AddEditBlog />} />
+              <Route path="trainers" element={<ManageTrainers />} />
+              <Route path="testimonials" element={<ManageTestimonials />} />
+              <Route path="gallery" element={<ManageGallery />} />
+              <Route path="enrollments" element={<ManageEnrollments />} />
+              <Route path="certificates" element={<ManageCertificates />} />
+              <Route path="contacts" element={<ManageContacts />} />
+            </Route>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
@@ -59,24 +76,6 @@ const App = () => {
               <Route path="privacy" element={<PrivacyPolicy />} />
               <Route path="terms" element={<TermsOfService />} />
               <Route path="*" element={<NotFound />} />
-            </Route>
-            <Route path="/admin-pacific" element={<AdminLogin />} />
-            <Route path="/admin-pacific/*" element={<AdminLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="courses" element={<ManageCourses />} />
-              <Route path="courses/new" element={<AddEditCourse />} />
-              <Route path="courses/edit/:id" element={<AddEditCourse />} />
-              <Route path="blogs" element={<ManageBlogs />} />
-              <Route path="blogs/new" element={<AddEditBlog />} />
-              <Route path="blogs/edit/:id" element={<AddEditBlog />} />
-              <Route path="trainers" element={<ManageTrainers />} />
-              <Route path="testimonials" element={<ManageTestimonials />} />
-              <Route path="gallery" element={<ManageGallery />} />
-              <Route path="enrollments" element={<ManageEnrollments />} />
-              <Route path="certificates" element={<ManageCertificates />} />
-              <Route path="contacts" element={<ManageContacts />} />
-
             </Route>
           </Routes>
         </AppProvider>
