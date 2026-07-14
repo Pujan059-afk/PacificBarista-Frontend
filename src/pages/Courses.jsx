@@ -36,6 +36,14 @@ const Courses = () => {
       <Helmet>
         <title>Our Courses | Pacific Barista Academy</title>
         <meta name="description" content="Explore our range of professional barista training courses — from espresso fundamentals to full certification." />
+        <link rel="canonical" href="https://www.pacificbarista.com/courses" />
+        <meta property="og:title" content="Our Courses | Pacific Barista Academy" />
+        <meta property="og:description" content="Explore our professional barista training courses — from espresso fundamentals to full certification." />
+        <meta property="og:url" content="https://www.pacificbarista.com/courses" />
+        <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Courses | Pacific Barista Academy" />
+        <meta name="twitter:description" content="Explore our professional barista training courses." />
       </Helmet>
 
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-secondary overflow-hidden">

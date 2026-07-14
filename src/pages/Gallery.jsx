@@ -61,8 +61,14 @@ const Gallery = () => {
       <Helmet>
         <title>Our Gallery | Pacific Barista Academy</title>
         <meta name="description" content="Explore our gallery showcasing training sessions, events, facilities, and student moments at Pacific Barista Academy." />
+        <link rel="canonical" href="https://www.pacificbarista.com/gallery" />
         <meta property="og:title" content="Our Gallery | Pacific Barista Academy" />
         <meta property="og:description" content="Explore our gallery showcasing training, events, facilities, and student moments." />
+        <meta property="og:url" content="https://www.pacificbarista.com/gallery" />
+        <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Our Gallery | Pacific Barista Academy" />
+        <meta name="twitter:description" content="Explore our gallery showcasing training, events, facilities, and student moments." />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

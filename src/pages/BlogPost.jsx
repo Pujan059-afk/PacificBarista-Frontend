@@ -70,12 +70,19 @@ const BlogPost = () => {
       <Helmet>
         <title>{post.title} | Pacific Barista Academy</title>
         <meta name="description" content={post.excerpt?.slice(0, 160) || ''} />
+        <link rel="canonical" href={`https://www.pacificbarista.com/blog/${post.slug}`} />
         <meta property="og:title" content={`${post.title} | Pacific Barista Academy`} />
         <meta property="og:description" content={post.excerpt?.slice(0, 160) || ''} />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={`https://www.pacificbarista.com/blog/${post.slug}`} />
+        <meta property="og:image" content={post.image?.url || 'https://www.pacificbarista.com/og-image.jpg'} />
         <meta property="article:published_time" content={post.publishedAt || post.createdAt} />
         <meta property="article:author" content={post.author} />
         <meta property="article:section" content={post.category} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${post.title} | Pacific Barista Academy`} />
+        <meta name="twitter:description" content={post.excerpt?.slice(0, 160) || ''} />
+        <meta name="twitter:image" content={post.image?.url || 'https://www.pacificbarista.com/og-image.jpg'} />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

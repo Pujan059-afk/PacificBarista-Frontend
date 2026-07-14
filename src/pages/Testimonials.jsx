@@ -67,8 +67,8 @@ const Testimonials = () => {
           gradient: gradients[i % gradients.length],
         }));
         setTestimonials(mapped);
-      } catch (err) {
-        console.error('Failed to load testimonials', err);
+      } catch {
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -90,8 +90,14 @@ const Testimonials = () => {
       <Helmet>
         <title>Student Success Stories | Pacific Barista Academy</title>
         <meta name="description" content="Read success stories from Pacific Barista Academy graduates. Discover how our training has transformed careers and lives." />
+        <link rel="canonical" href="https://www.pacificbarista.com/testimonials" />
         <meta property="og:title" content="Student Success Stories | Pacific Barista Academy" />
         <meta property="og:description" content="Read success stories from Pacific Barista Academy graduates." />
+        <meta property="og:url" content="https://www.pacificbarista.com/testimonials" />
+        <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Student Success Stories | Pacific Barista Academy" />
+        <meta name="twitter:description" content="Read success stories from Pacific Barista Academy graduates." />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

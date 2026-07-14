@@ -40,8 +40,14 @@ const Contact = () => {
       <Helmet>
         <title>Contact Us | Pacific Barista Academy</title>
         <meta name="description" content="Get in touch with Pacific Barista Academy. Visit us, call, or send a message. We'd love to hear from you." />
+        <link rel="canonical" href="https://www.pacificbarista.com/contact" />
         <meta property="og:title" content="Contact Us | Pacific Barista Academy" />
-        <meta property="og:description" content="Get in touch with Pacific Barista Academy." />
+        <meta property="og:description" content="Get in touch with Pacific Barista Academy. Visit us in Pokhara, Nepal." />
+        <meta property="og:url" content="https://www.pacificbarista.com/contact" />
+        <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us | Pacific Barista Academy" />
+        <meta name="twitter:description" content="Get in touch with Pacific Barista Academy. Visit us in Pokhara, Nepal." />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">
