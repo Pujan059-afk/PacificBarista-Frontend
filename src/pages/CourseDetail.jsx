@@ -7,7 +7,6 @@ import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Loader from '../components/common/Loader';
 import api from '../services/api';
-import { fadeIn, staggerContainer } from '../animations';
 import { IconCoffee } from '../components/ui/Icons';
 
 const levelVariant = {
@@ -79,7 +78,7 @@ const CourseDetail = () => {
             <span>/</span>
             <span className="text-cream/80">{course.title}</span>
           </div>
-          <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="max-w-3xl">
+          <div className="max-w-3xl">
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-6">
               {course.title}
             </h1>
@@ -89,13 +88,8 @@ const CourseDetail = () => {
             <p className="font-body text-cream/60 text-lg leading-relaxed">
               {course.description.substring(0, 120)}...
             </p>
-          </motion.div>
-          <motion.div
-            variants={fadeIn('up', 0.2)}
-            initial="hidden"
-            animate="show"
-            className="flex flex-wrap items-center gap-6 mt-8 p-6 bg-white/10 backdrop-blur-sm rounded-xl"
-          >
+          </div>
+          <div className="flex flex-wrap items-center gap-6 mt-8 p-6 bg-white/10 backdrop-blur-sm rounded-xl">
             <div className="flex items-center gap-3 text-cream/80">
               <svg className="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -109,7 +103,7 @@ const CourseDetail = () => {
               </svg>
               <span className="font-body text-sm font-semibold text-white">{currencySymbol}. {course.price.toLocaleString()}/-</span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -117,68 +111,39 @@ const CourseDetail = () => {
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-16">
-              <motion.div
-                variants={fadeIn('up')}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-              >
+              <div>
                 <h2 className="font-heading text-3xl font-bold text-primary mb-6">About This Course</h2>
                 <p className="font-body text-text/70 leading-relaxed text-lg">{course.description}</p>
-              </motion.div>
+              </div>
 
-              <motion.div
-                variants={fadeIn('up')}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-              >
+              <div>
                 <h2 className="font-heading text-3xl font-bold text-primary mb-6">What You Will Learn</h2>
-                <motion.ul
-                  variants={staggerContainer(0.05)}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  className="grid grid-cols-1 sm:grid-cols-2 gap-3"
-                >
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {(course.learningOutcomes || []).map((outcome, i) => (
-                    <motion.li
+                    <li
                       key={i}
-                      variants={fadeIn('up', i * 0.05)}
                       className="flex items-start gap-3 p-3 rounded-lg bg-accent/5"
                     >
                       <svg className="w-5 h-5 text-accent mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="font-body text-text/70 text-sm">{outcome}</span>
-                    </motion.li>
+                    </li>
                   ))}
-                </motion.ul>
+                </ul>
                 {course.learningOutcomes?.[0] && (
-                  <motion.div
-                    variants={fadeIn('up')}
-                    className="mt-6 p-5 bg-accent/10 rounded-xl border border-accent/20"
-                  >
+                  <div className="mt-6 p-5 bg-accent/10 rounded-xl border border-accent/20">
                     <p className="font-body text-accent font-semibold text-sm">Master these skills with {course.title}.</p>
-                  </motion.div>
+                  </div>
                 )}
-              </motion.div>
+              </div>
 
-              <motion.div
-                variants={fadeIn('up')}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-              >
+              <div>
                 <h2 className="font-heading text-3xl font-bold text-primary mb-6">Course Curriculum</h2>
                 <div className="space-y-3">
                   {course.curriculum.map((week, index) => (
-                    <motion.div
+                    <div
                       key={index}
-                      variants={fadeIn('up', index * 0.05)}
-                      initial="hidden"
-                      whileInView="show"
-                      viewport={{ once: true }}
                       className="border border-primary/10 rounded-xl overflow-hidden"
                     >
                       <button
@@ -217,10 +182,10 @@ const CourseDetail = () => {
                           </motion.div>
                         )}
                       </AnimatePresence>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             <div className="space-y-8">
