@@ -59,7 +59,7 @@ const ManageGallery = () => {
   const uploadFile = async (file) => {
     const formData = new FormData();
     formData.append('image', file);
-    if (category) formData.append('category', category);
+    formData.append('category', category || 'General');
     await api.post('/gallery', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
   };
 
@@ -67,6 +67,10 @@ const ManageGallery = () => {
     const files = Array.from(fileList).filter((f) => f.type.startsWith('image/'));
     if (files.length === 0) {
       showToast('Please select image files', 'error');
+      return;
+    }
+    if (!category) {
+      showToast('Please select a category before uploading', 'error');
       return;
     }
     setUploading(true);
