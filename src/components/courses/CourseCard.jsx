@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import Card from '../ui/Card';
 import Badge from '../ui/Badge';
 import { IconCoffee } from '../ui/Icons';
 
@@ -12,20 +10,12 @@ const levelVariant = {
   advanced: 'error',
 };
 
-const CourseCard = ({ course, index = 0 }) => {
+const CourseCard = ({ course }) => {
   const { title, slug, image, duration, level, shortDescription, price } = course;
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-30px' }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ y: -6 }}
-      className="group"
-    >
-      <Card className="h-full flex flex-col overflow-hidden">
+    <div className="group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
         <div className="relative">
           <div className="w-full h-28 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
             {image?.url ? (
@@ -71,8 +61,7 @@ const CourseCard = ({ course, index = 0 }) => {
             </Link>
           </div>
         </div>
-      </Card>
-    </motion.div>
+    </div>
   );
 };
 

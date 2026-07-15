@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import PageTransition from '../components/common/PageTransition';
 import CourseCard from '../components/courses/CourseCard';
 import CourseFilter from '../components/courses/CourseFilter';
 import Loader from '../components/common/Loader';
-import { fadeIn, staggerContainer } from '../animations';
 import api from '../services/api';
 
 const Courses = () => {
@@ -32,13 +29,13 @@ const Courses = () => {
   }, [page, search, activeLevel]);
 
   return (
-    <PageTransition>
+    <>
       <Helmet>
         <title>Our Courses | Pacific Barista Academy</title>
         <meta name="description" content="Explore our range of professional barista training courses — from espresso fundamentals to full certification." />
         <link rel="canonical" href="https://www.pacificbarista.com/courses" />
         <meta property="og:title" content="Our Courses | Pacific Barista Academy" />
-        <meta property="og:description" content="Explore our professional barista training courses — from espresso fundamentals to full certification." />
+        <meta property="og:description" content="Explore our professional barista training courses — from foundation to mastery." />
         <meta property="og:url" content="https://www.pacificbarista.com/courses" />
         <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
@@ -52,12 +49,7 @@ const Courses = () => {
           <div className="absolute bottom-10 right-10 w-96 h-96 border border-accent/10 rounded-full" />
         </div>
         <div className="container-custom relative z-10">
-          <motion.div
-            variants={fadeIn('up')}
-            initial="hidden"
-            animate="show"
-            className="text-center"
-          >
+          <div className="text-center">
             <span className="inline-block text-accent font-body font-semibold text-sm uppercase tracking-[0.2em] mb-4">
               Start Your Journey
             </span>
@@ -67,17 +59,12 @@ const Courses = () => {
             <p className="font-body text-cream/60 text-lg max-w-2xl mx-auto">
               Roast Your Barista Skill — from foundation to mastery.
             </p>
-          </motion.div>
-          <motion.div
-            variants={fadeIn('up')}
-            initial="hidden"
-            animate="show"
-            className="mt-10 max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10"
-          >
+          </div>
+          <div className="mt-10 max-w-4xl mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
             <p className="font-body text-cream/90 text-base leading-relaxed text-center">
               We provide complete international standard barista training package, Advance Latte Art. Including customer service standards, food safety measurements and health & safety measurements at work.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -93,22 +80,16 @@ const Courses = () => {
           {loading ? (
             <Loader />
           ) : courses.length === 0 ? (
-            <motion.div variants={fadeIn('up')} initial="hidden" animate="show" className="text-center py-16">
+            <div className="text-center py-16">
               <p className="font-body text-text/60 text-lg">No courses found matching your criteria.</p>
-            </motion.div>
+            </div>
           ) : (
             <>
-              <motion.div
-                key={activeLevel + search + page}
-                variants={staggerContainer(0.1)}
-                initial="hidden"
-                animate="show"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              >
-                {courses.map((course, i) => (
-                  <CourseCard key={course._id} course={course} index={i} />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {courses.map((course) => (
+                  <CourseCard key={course._id} course={course} />
                 ))}
-              </motion.div>
+              </div>
 
               {pages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-12">
@@ -131,7 +112,7 @@ const Courses = () => {
           )}
         </div>
       </section>
-    </PageTransition>
+    </>
   );
 };
 
