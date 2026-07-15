@@ -304,7 +304,7 @@ const AddEditCourse = () => {
               </select>
             </div>
             <div>
-              <label className={labelClass}>Price ($)</label>
+              <label className={labelClass}>Price (रू)</label>
               <input
                 type="number"
                 min="0"
