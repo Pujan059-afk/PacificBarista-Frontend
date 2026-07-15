@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import PageTransition from '../components/common/PageTransition';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Loader from '../components/common/Loader';
@@ -37,21 +36,19 @@ const CourseDetail = () => {
 
   if (!course) {
     return (
-      <PageTransition>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="font-heading text-4xl font-bold text-primary mb-4">Course not found</h1>
-            <Link to="/courses" className="text-accent hover:underline font-body">Back to courses</Link>
-          </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="font-heading text-4xl font-bold text-primary mb-4">Course not found</h1>
+          <Link to="/courses" className="text-accent hover:underline font-body">Back to courses</Link>
         </div>
-      </PageTransition>
+      </div>
     );
   }
 
   const currencySymbol = 'Rs.';
 
   return (
-    <PageTransition>
+    <>
       <Helmet>
         <title>{course.title} | Pacific Barista Academy</title>
         <meta name="description" content={course.description.substring(0, 160)} />
@@ -253,7 +250,7 @@ const CourseDetail = () => {
           </div>
         </div>
       </section>
-    </PageTransition>
+    </>
   );
 };
 
