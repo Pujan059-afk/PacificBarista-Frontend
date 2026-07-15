@@ -225,8 +225,18 @@ const CourseDetail = () => {
 
             <div className="space-y-8">
               <div className="bg-white rounded-xl p-6 shadow-md border border-primary/5 sticky top-28">
-                <div className="w-full h-48 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-6">
-                  <IconCoffee className="w-20 h-20 text-cream/30" />
+                <div className="w-full h-48 rounded-lg overflow-hidden mb-6">
+                  {course.image?.url ? (
+                    <img
+                      src={course.image.url}
+                      alt={course.title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                      <IconCoffee className="w-20 h-20 text-cream/30" />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-4 mb-6">
