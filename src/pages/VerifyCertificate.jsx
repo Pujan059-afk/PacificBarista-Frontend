@@ -64,11 +64,11 @@ const VerifyCertificate = () => {
       <Helmet>
         <title>Verify Certificate | Pacific Barista Academy</title>
         <meta name="description" content="Verify the authenticity of Pacific Barista Academy certificates. Enter your certificate ID to instantly confirm credentials." />
-        <link rel="canonical" href="https://www.pacificbarista.com/verify" />
+        <link rel="canonical" href="https://pacificbarista.com.np/verify" />
         <meta property="og:title" content="Verify Certificate | Pacific Barista Academy" />
         <meta property="og:description" content="Instantly verify the authenticity of a Pacific Barista Academy certificate." />
-        <meta property="og:url" content="https://www.pacificbarista.com/verify" />
-        <meta property="og:image" content="https://www.pacificbarista.com/og-image.jpg" />
+        <meta property="og:url" content="https://pacificbarista.com.np/verify" />
+        <meta property="og:image" content="https://pacificbarista.com.np/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Verify Certificate | Pacific Barista Academy" />
         <meta name="twitter:description" content="Instantly verify the authenticity of a Pacific Barista Academy certificate." />
