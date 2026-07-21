@@ -186,39 +186,41 @@ const CourseDetail = () => {
             </div>
 
             <div className="space-y-8">
-              <div className="bg-white rounded-xl p-6 shadow-md border border-primary/5 sticky top-28">
-                <div className="w-full h-48 rounded-lg overflow-hidden mb-6">
-                  {course.image?.url ? (
-                    <img
-                      src={course.image.url}
-                      alt={course.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                      <IconCoffee className="w-20 h-20 text-cream/30" />
+              <div className="bg-white rounded-xl shadow-md border border-primary/5 sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto">
+                <div className="p-6">
+                  <div className="w-full h-48 rounded-lg overflow-hidden mb-6">
+                    {course.image?.url ? (
+                      <img
+                        src={course.image.url}
+                        alt={course.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <IconCoffee className="w-20 h-20 text-cream/30" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-center justify-between font-body text-sm">
+                      <span className="text-text/60">Duration</span>
+                      <span className="text-primary font-medium">{course.duration}</span>
                     </div>
-                  )}
-                </div>
+                    <div className="flex items-center justify-between font-body text-sm">
+                      <span className="text-text/60">Level</span>
+                      <Badge variant={levelVariant[course.level?.toLowerCase()]}>{course.level}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between font-body text-sm">
+                      <span className="text-text/60">Fee</span>
+                      <span className="font-heading text-base font-bold text-accent">{currencySymbol}. {course.price.toLocaleString()}/-</span>
+                    </div>
+                  </div>
 
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between font-body text-sm">
-                    <span className="text-text/60">Duration</span>
-                    <span className="text-primary font-medium">{course.duration}</span>
-                  </div>
-                  <div className="flex items-center justify-between font-body text-sm">
-                    <span className="text-text/60">Level</span>
-                    <Badge variant={levelVariant[course.level?.toLowerCase()]}>{course.level}</Badge>
-                  </div>
-                  <div className="flex items-center justify-between font-body text-sm">
-                    <span className="text-text/60">Fee</span>
-                    <span className="font-heading text-2xl font-bold text-accent">{currencySymbol}. {course.price.toLocaleString()}/-</span>
-                  </div>
+                  <Button variant="primary" size="lg" className="w-full" onClick={() => window.location.href = '/enroll'}>
+                    Enroll Now
+                  </Button>
                 </div>
-
-                <Button variant="primary" size="lg" className="w-full" onClick={() => window.location.href = '/enroll'}>
-                  Enroll Now
-                </Button>
               </div>
 
               {course.certificateIncluded && (

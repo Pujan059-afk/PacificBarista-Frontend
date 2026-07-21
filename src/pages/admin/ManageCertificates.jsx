@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import api from '../../services/api';
 import { useApp } from '../../contexts/AppContext';
 import PageTransition from '../../components/common/PageTransition';
 import Button from '../../components/ui/Button';
-import { FiPlus, FiTrash2, FiEdit2, FiCopy, FiCheck, FiX, FiSearch } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiEdit2, FiCopy, FiX, FiSearch, FiImage } from 'react-icons/fi';
 
 const emptyForm = {
+  certificateId: '',
   studentName: '',
   courseName: '',
   issueDate: '',
-  grade: '',
 };
 
 const ManageCertificates = () => {
@@ -25,6 +25,9 @@ const ManageCertificates = () => {
   const [saving, setSaving] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [photoFile, setPhotoFile] = useState(null);
+  const [photoPreview, setPhotoPreview] = useState('');
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchCertificates();
@@ -44,6 +47,8 @@ const ManageCertificates = () => {
   const openCreate = () => {
     setEditId(null);
     setForm(emptyForm);
+    setPhotoFile(null);
+    setPhotoPreview('');
     setModalOpen(true);
   };
 
@@ -53,26 +58,54 @@ const ManageCertificates = () => {
       const c = res.data;
       setEditId(id);
       setForm({
+        certificateId: c.certificateId || '',
         studentName: c.studentName || '',
         courseName: c.courseName || '',
         issueDate: c.issueDate ? c.issueDate.slice(0, 10) : '',
-        grade: c.grade || '',
       });
+      setPhotoFile(null);
+      setPhotoPreview(c.photo?.url || '');
       setModalOpen(true);
     } catch {
       showToast('Failed to load certificate', 'error');
     }
   };
 
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
+      const formData = new FormData();
+      formData.append('certificateId', form.certificateId);
+      formData.append('studentName', form.studentName);
+      formData.append('courseName', form.courseName);
+      formData.append('issueDate', form.issueDate);
+      if (photoFile) {
+        formData.append('photo', photoFile);
+      }
+
       if (editId) {
-        await api.put(`/certificates/${editId}`, form);
+        await api.put(`/certificates/${editId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         showToast('Certificate updated', 'success');
       } else {
-        await api.post('/certificates', form);
+        await api.post('/certificates', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
         showToast('Certificate created', 'success');
       }
       setModalOpen(false);
@@ -216,7 +249,7 @@ const ManageCertificates = () => {
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-xl p-6 max-w-lg w-full shadow-xl"
+              className="bg-white rounded-xl p-6 max-w-lg w-full shadow-xl max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between mb-6">
                 <h3 className="font-heading text-lg font-bold text-primary">
@@ -227,6 +260,16 @@ const ManageCertificates = () => {
                 </button>
               </div>
               <form onSubmit={handleSave} className="space-y-4">
+                <div>
+                  <label className="block font-body text-sm text-text/60 mb-1.5">Certificate ID (optional)</label>
+                  <input
+                    type="text"
+                    value={form.certificateId}
+                    onChange={(e) => setForm({ ...form, certificateId: e.target.value.toUpperCase() })}
+                    className="w-full px-4 py-2.5 bg-cream border border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent font-mono tracking-wider uppercase"
+                    placeholder="Leave empty to auto-generate (PBC-XXXX-XXXX)"
+                  />
+                </div>
                 <div>
                   <label className="block font-body text-sm text-text/60 mb-1.5">Student Name</label>
                   <input
@@ -260,14 +303,35 @@ const ManageCertificates = () => {
                   />
                 </div>
                 <div>
-                  <label className="block font-body text-sm text-text/60 mb-1.5">Grade (optional)</label>
+                  <label className="block font-body text-sm text-text/60 mb-1.5">Photo (optional)</label>
                   <input
-                    type="text"
-                    value={form.grade}
-                    onChange={(e) => setForm({ ...form, grade: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-cream border border-primary/10 rounded-lg text-text font-body text-sm outline-none focus:border-accent"
-                    placeholder="e.g. A, Distinction, Pass"
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="hidden"
+                    id="cert-photo"
                   />
+                  {photoPreview ? (
+                    <div className="relative inline-block">
+                      <img src={photoPreview} alt="Preview" className="w-32 h-32 object-cover rounded-lg border border-primary/10" />
+                      <button
+                        type="button"
+                        onClick={handleRemovePhoto}
+                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+                      >
+                        <FiX className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ) : (
+                    <label
+                      htmlFor="cert-photo"
+                      className="flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed border-primary/15 rounded-lg cursor-pointer hover:border-accent/50 hover:bg-cream/50 transition-colors"
+                    >
+                      <FiImage className="w-8 h-8 text-text/20 mb-2" />
+                      <span className="font-body text-xs text-text/40">Upload</span>
+                    </label>
+                  )}
                 </div>
                 <div className="flex gap-3 justify-end pt-2">
                   <button type="button" onClick={() => setModalOpen(false)} className="px-4 py-2 rounded-lg font-body text-sm text-text/60 hover:bg-primary/5">Cancel</button>

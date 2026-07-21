@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   FiSearch, FiCheckCircle, FiXCircle, FiAward,
-  FiCalendar, FiUser, FiBookOpen, FiHash, FiStar, FiShield
+  FiCalendar, FiUser, FiBookOpen, FiHash, FiShield
 } from 'react-icons/fi';
 import api from '../services/api';
 import PageTransition from '../components/common/PageTransition';
-import { fadeIn, staggerContainer } from '../animations/index';
+import { fadeIn } from '../animations/index';
 
 /* ─── small helper ─── */
 const InfoRow = ({ icon: Icon, label, value, delay = 0 }) => (
@@ -242,9 +242,6 @@ const VerifyCertificate = () => {
                           })}
                           delay={0.2}
                         />
-                        {result.certificate.grade && (
-                          <InfoRow icon={FiStar} label="Grade" value={result.certificate.grade} delay={0.25} />
-                        )}
                       </div>
 
                       {/* footer */}

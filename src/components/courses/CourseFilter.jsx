@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 const levels = [
   { value: 'all', label: 'All' },
   { value: 'beginner', label: 'Beginner' },
@@ -12,10 +10,8 @@ const CourseFilter = ({ activeLevel, onFilterChange, searchQuery, onSearchChange
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-10">
       <div className="flex items-center gap-2 flex-wrap">
         {levels.map((level) => (
-          <motion.button
+          <button
             key={level.value}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             onClick={() => onFilterChange(level.value)}
             className={`px-5 py-2 rounded-full font-body text-sm font-medium transition-all duration-300 ${
               activeLevel === level.value
@@ -24,7 +20,7 @@ const CourseFilter = ({ activeLevel, onFilterChange, searchQuery, onSearchChange
             }`}
           >
             {level.label}
-          </motion.button>
+          </button>
         ))}
       </div>
       <div className="relative w-full md:w-72">
