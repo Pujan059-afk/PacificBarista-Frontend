@@ -16,42 +16,40 @@ export const AuthProvider = ({ children }) => {
   const [superAdmin, setSuperAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // On mount, check if the httpOnly cookie session is still valid
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setLoading(true);
-      api
-        .get('/auth/me')
-        .then((res) => {
-          const userData = res.data.user || res.data;
-          setUser(userData);
-          setIsAuthenticated(true);
-          setAdmin(userData.role === 'admin' || userData.role === 'superadmin');
-          setSuperAdmin(userData.role === 'superadmin');
-        })
-        .catch(() => {
-          localStorage.removeItem('token');
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+    api
+      .get('/auth/me')
+      .then((res) => {
+        const userData = res.data.user || res.data;
+        setUser(userData);
+        setIsAuthenticated(true);
+        setAdmin(userData.role === 'admin' || userData.role === 'superadmin');
+        setSuperAdmin(userData.role === 'superadmin');
+      })
+      .catch(() => {
+        // No valid session — stay logged out, don't redirect here
+        // (api.js interceptor handles 401 redirect on protected page requests)
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const login = useCallback(async (email, otp) => {
     const res = await api.post('/auth/verify-otp', { email, otp });
-    const { token, user: userData } = res.data;
-    const userInfo = userData || res.data;
-    localStorage.setItem('token', token);
-    setUser(userInfo);
+    const userData = res.data.user || res.data;
+    setUser(userData);
     setIsAuthenticated(true);
-    setAdmin(userInfo.role === 'admin' || userInfo.role === 'superadmin');
-    setSuperAdmin(userInfo.role === 'superadmin');
-    return userInfo;
+    setAdmin(userData.role === 'admin' || userData.role === 'superadmin');
+    setSuperAdmin(userData.role === 'superadmin');
+    return userData;
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem('token');
+  const logout = useCallback(async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch {
+      // ignore errors — still clear local state
+    }
     setUser(null);
     setIsAuthenticated(false);
     setAdmin(false);
