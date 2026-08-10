@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+*.local
+uploads/
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vercel
+*.log
+.env*

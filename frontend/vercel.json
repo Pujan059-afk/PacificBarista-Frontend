@@ -1,0 +1,46 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://pacificbarista-backend.onrender.com/api/$1" },
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+  ],
+  "redirects": [
+    { "source": "/workshops", "destination": "/courses", "permanent": true },
+    { "source": "/workshops/", "destination": "/courses", "permanent": true },
+    { "source": "/testing", "destination": "/verify", "permanent": true },
+    { "source": "/testing/", "destination": "/verify", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://res.cloudinary.com https://pacificbarista-backend.onrender.com https://www.google-analytics.com; connect-src 'self' https://pacificbarista-backend.onrender.com https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com; frame-ancestors 'self';"
+        }
+      ]
+    }
+  ]
+}
