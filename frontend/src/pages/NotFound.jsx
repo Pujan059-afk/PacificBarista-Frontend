@@ -8,6 +8,7 @@ export default function NotFound() {
     <div className="min-h-screen flex items-center justify-center bg-cream px-4">
       <Helmet>
         <title>404 - Page Not Found | Pacific Barista</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="text-center max-w-lg">
         <motion.div

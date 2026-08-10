@@ -47,6 +47,7 @@ const Courses = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Our Courses | Pacific Barista Academy" />
         <meta name="twitter:description" content="Explore our professional barista training courses." />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
       </Helmet>
 
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-primary via-primary to-secondary overflow-hidden">

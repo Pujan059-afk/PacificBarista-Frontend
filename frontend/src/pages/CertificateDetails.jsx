@@ -29,8 +29,8 @@ const CertificateDetails = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>{certificate ? `${certificate.studentName} | Pacific Barista Academy` : 'Student Profile | Pacific Barista Academy'}</title>
-        <meta name="description" content={certificate ? `${certificate.studentName} - ${certificate.headline || certificate.courseName} at Pacific Barista Academy.` : 'View Pacific Barista Academy student profile.'} />
+        <title>{certificate ? `${certificate.studentName} | Pacific Barista Academy` : 'Certificate | Pacific Barista Academy'}</title>
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-primary via-primary/95 to-primary/90 relative overflow-hidden">

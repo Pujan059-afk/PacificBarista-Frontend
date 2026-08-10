@@ -70,7 +70,10 @@ const AdminLogin = () => {
 
   return (
     <>
-      <Helmet><title>Admin Login - Pacific Barista</title></Helmet>
+      <Helmet>
+        <title>Admin Login - Pacific Barista</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="min-h-screen bg-primary flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

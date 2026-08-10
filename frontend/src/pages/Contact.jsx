@@ -162,7 +162,7 @@ const Contact = () => {
       <section className="h-96 bg-primary/5 relative overflow-hidden">
         <iframe
           title="Pacific Barista Academy Location"
-          src="https://www.google.com/maps?q=Newroad-9+Pokhara+Nepal&output=embed"
+          src="https://maps.google.com/maps?q=Newroad-9+Pokhara+Nepal&output=embed"
           className="w-full h-full border-0"
           allowFullScreen
           loading="lazy"

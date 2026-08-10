@@ -1,3 +1,13 @@
 User-agent: *
 Allow: /
+
+# Private / utility pages — no crawl needed
+Disallow: /admin-pacific/
+Disallow: /enroll
+Disallow: /verify
+Disallow: /certificate/
+
+# Backend API
+Disallow: /api/
+
 Sitemap: https://pacificbarista.com.np/sitemap.xml
