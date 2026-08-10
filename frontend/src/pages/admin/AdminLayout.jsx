@@ -114,7 +114,10 @@ const AdminLayout = () => {
 
   return (
     <>
-      <Helmet><title>Admin - Pacific Barista</title></Helmet>
+      <Helmet>
+        <title>Admin - Pacific Barista</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div className="admin-wrapper min-h-screen bg-cream flex">
         {/* Desktop sidebar */}
         <aside className="hidden lg:flex lg:w-64 lg:flex-col bg-primary fixed inset-y-0 left-0 z-30">

@@ -69,6 +69,8 @@ const Gallery = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Our Gallery | Pacific Barista Academy" />
         <meta name="twitter:description" content="Explore our gallery showcasing training, events, facilities, and student moments." />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

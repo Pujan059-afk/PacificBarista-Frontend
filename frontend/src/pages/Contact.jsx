@@ -48,6 +48,7 @@ const Contact = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Contact Us | Pacific Barista Academy" />
         <meta name="twitter:description" content="Get in touch with Pacific Barista Academy. Visit us in Pokhara, Nepal." />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

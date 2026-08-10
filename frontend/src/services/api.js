@@ -12,10 +12,12 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // On any 401, the cookie is invalid/expired — redirect to login
-      // unless we're already on the login page to avoid redirect loops
-      if (!window.location.pathname.includes('/admin-pacific/login')) {
-        window.location.href = '/admin-pacific/login';
+      // Only redirect to admin login if the user is already inside the admin area
+      // Public pages should silently ignore 401 (e.g. /api/auth/me check on load)
+      const isAdminArea = window.location.pathname.startsWith('/admin-pacific');
+      const isAlreadyOnLogin = window.location.pathname === '/admin-pacific';
+      if (isAdminArea && !isAlreadyOnLogin) {
+        window.location.href = '/admin-pacific';
       }
     }
     const message = error.response?.data?.message || error.message || 'Something went wrong';

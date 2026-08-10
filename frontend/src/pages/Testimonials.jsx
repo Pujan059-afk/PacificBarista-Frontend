@@ -104,6 +104,7 @@ const Testimonials = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Student Success Stories | Pacific Barista Academy" />
         <meta name="twitter:description" content="Read success stories from Pacific Barista Academy graduates." />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
       </Helmet>
 
       <section className="relative bg-primary text-cream pt-32 pb-24 overflow-hidden">

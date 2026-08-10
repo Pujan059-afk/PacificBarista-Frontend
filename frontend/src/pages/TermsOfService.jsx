@@ -60,6 +60,11 @@ const TermsOfService = () => {
         <meta property="og:title" content="Terms of Service | Pacific Barista Academy" />
         <meta property="og:description" content="Understand the terms governing course enrollment, payments, and use of our services." />
         <meta property="og:url" content="https://pacificbarista.com.np/terms" />
+        <meta property="og:image" content="https://pacificbarista.com.np/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms of Service | Pacific Barista Academy" />
+        <meta name="twitter:description" content="Understand the terms governing course enrollment, payments, and use of our services." />
+        <meta name="twitter:image" content="https://pacificbarista.com.np/og-image.jpg" />
       </Helmet>
 
       <section className="relative pt-36 pb-20 bg-gradient-to-br from-primary via-primary to-secondary overflow-hidden">
