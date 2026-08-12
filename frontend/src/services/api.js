@@ -15,7 +15,7 @@ api.interceptors.response.use(
       // Only redirect to admin login if the user is already inside the admin area
       // Public pages should silently ignore 401 (e.g. /api/auth/me check on load)
       const isAdminArea = window.location.pathname.startsWith('/admin-pacific');
-      const isAlreadyOnLogin = window.location.pathname === '/admin-pacific';
+      const isAlreadyOnLogin = window.location.pathname === '/admin-pacific' || window.location.pathname === '/admin-pacific/login';
       if (isAdminArea && !isAlreadyOnLogin) {
         window.location.href = '/admin-pacific';
       }

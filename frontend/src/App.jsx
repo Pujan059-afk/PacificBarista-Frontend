@@ -45,6 +45,7 @@ const App = () => {
           <Routes>
             <Route path="/admin-pacific">
               <Route index element={<AdminLogin />} />
+              <Route path="login" element={<AdminLogin />} />
               <Route element={<AdminLayout />}>
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="courses" element={<ManageCourses />} />
