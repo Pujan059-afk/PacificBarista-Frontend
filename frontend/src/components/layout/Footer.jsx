@@ -1,10 +1,36 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiMail, FiPhone, FiMapPin, FiClock } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiClock, FiSend } from 'react-icons/fi';
 import { FaInstagram, FaFacebookF, FaYoutube, FaTiktok } from 'react-icons/fa';
 import { NAV_LINKS } from '../../utils/constants';
+import { useApp } from '../../contexts/AppContext';
+import api from '../../services/api';
 import logo from '../../assets/pacificbarista.jpg';
 
 const Footer = () => {
+  const { showToast } = useApp();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      showToast('Please enter a valid email address', 'error');
+      return;
+    }
+    setLoading(true);
+    try {
+      await api.post('/newsletter/subscribe', { email: trimmed });
+      showToast('Subscribed successfully!', 'success');
+      setEmail('');
+    } catch (err) {
+      showToast(err.message || 'Failed to subscribe. Please try again.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <footer className="bg-primary text-white">
       <div className="container-custom pt-16 pb-8">
@@ -51,6 +77,35 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div>
+            <h3 className="font-heading text-lg font-semibold mb-5">Newsletter</h3>
+            <p className="text-white/60 font-body text-sm leading-relaxed mb-4">
+              Subscribe for course updates, offers, and barista tips.
+            </p>
+            <form onSubmit={handleSubscribe} className="flex gap-2">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
+                aria-label="Email address for newsletter"
+                className="flex-1 min-w-0 bg-white/10 border border-white/10 rounded-md px-3 py-2.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-accent focus:bg-white/15 transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                aria-label="Subscribe to newsletter"
+                className="flex-shrink-0 bg-accent hover:bg-accent/80 text-white rounded-md px-4 py-2.5 text-sm font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {loading ? (
+                  <span className="block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <FiSend className="w-4 h-4" />
+                )}
+              </button>
+            </form>
           </div>
 
           <div>
