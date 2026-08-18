@@ -14,7 +14,7 @@ const contactInfo = [
   { icon: FiMapPin, title: 'Our Address', details: ['Newroad-9, Pokhara', 'Pokhara, Nepal'] },
   { icon: FiPhone, title: 'Phone Number', details: ['061-591328', '984-6944202'] },
   { icon: FiMail, title: 'Email Address', details: ['pbap2021@gmail.com'] },
-  { icon: FiClock, title: 'Working Hours', details: ['Mon - Fri: 8:00 AM - 6:00 PM', 'Saturday: 9:00 AM - 4:00 PM', 'Sunday: Closed'] },
+  { icon: FiClock, title: 'Working Hours', details: ['Sun - Fri: 7:00 AM - 5:00 PM', 'Saturday: Closed'] },
 ];
 
 const Contact = () => {
