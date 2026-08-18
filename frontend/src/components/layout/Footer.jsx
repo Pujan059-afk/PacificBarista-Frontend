@@ -132,9 +132,8 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <FiClock className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
                 <div className="text-white/60 font-body text-sm">
-                  <p>Mon-Fri: 8:00 AM - 6:00 PM</p>
-                  <p>Sat: 9:00 AM - 4:00 PM</p>
-                  <p>Sun: Closed</p>
+                  <p>Sun-Fri: 7:00 AM - 5:00 PM</p>
+                  <p>Sat: Closed</p>
                 </div>
               </li>
             </ul>
